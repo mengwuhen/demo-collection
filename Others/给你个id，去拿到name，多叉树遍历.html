@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>根据id得到name</title>
+</head>
+<body>
+	<script>
+		const cityData = [
+		{
+			id: 1,
+			name: '广东省',
+			children: [
+			{
+				id: 11,
+				name: '深圳',
+				children: [
+				{
+					id: 111,
+					name: '宝安',
+					children: [
+					{
+						id: 1111,
+						name: '西乡',
+						children:[
+						{
+							id: 11111,
+							name: '坪洲',
+							children:[]
+						},
+						{
+							id: 11112,
+							name: '灵芝',
+							children:[]
+						}
+						]
+					},
+					{
+						id: 1112,
+						name: '南山',
+						children:[
+						{
+							id: 11121,
+							name: '科技园',
+							children:[]
+						}
+						]
+					}
+					]
+				},
+				{
+					id: 112,
+					name: '福田',
+					children: []
+				}
+				]
+			},
+			{
+				id: 12,
+				name: '广州',
+				children: [
+				{
+					id: 122,
+					name: '白云区',
+					children: [
+					{
+						id: 1222,
+						name: '白云区',
+						children: []
+					}
+					]
+				},
+				{
+					id: 122,
+					name: '珠海区',
+					children: []
+				}
+				]
+			}
+			]
+		},
+		{
+			id: 2,
+			name: '湖南省',
+			children: [
+			{
+				id: 21,
+				name: '深圳',
+				children: [
+				{
+					id: 211,
+					name: '宝安',
+					children: [
+					{
+						id: 2111,
+						name: '西乡',
+						children:[
+						{
+							id: 21111,
+							name: '坪洲',
+							children:[]
+						},
+						{
+							id: 21112,
+							name: '灵芝',
+							children:[]
+						}
+						]
+					},
+					{
+						id: 2112,
+						name: '南山',
+						children:[
+						{
+							id: 21121,
+							name: '科技园',
+							children:[]
+						}
+						]
+					}
+					]
+				},
+				{
+					id: 212,
+					name: '福田',
+					children: []
+				}
+				]
+			},]
+		}
+		];
+
+		let result = ''
+
+		// 递归实现
+	// 	const recursion = (cityData, id) => {
+	// 	  // cityData数据为空的时候直接返回
+	// 	  if (!cityData || !cityData.length) return;
+	// 	  // 常规循环cityData
+	// 	  for (let i = 0, len = cityData.length; i < len; i++) {
+	// 	  	const childs = cityData[i].children;
+
+	// 	    // 如果匹配到id的话，就是我们要的结果
+	// 	    if (cityData[i].id === id) {
+	// 	    	result = cityData[i].name
+	// 	    }
+	// 	    // 如果还有子节点，执行递归
+	// 	    if(childs && childs.length > 0){
+	// 	    	recursion(childs, id);
+	// 	    }
+	// 	}
+	// 	return result
+	// };
+	// const r = recursion(cityData, 21112);
+	// 	console.log(r) // 灵芝
+	
+
+	//广度优先
+// 	let result = ''
+
+// 	const range = (cityData, id) => {
+// 		if (!cityData || !cityData.length) return;
+//   // 定义一个数据栈
+//   let stack = [];
+
+//   let item = null;
+
+//   //先将第一层节点放入栈
+//   for (var i = 0, len = cityData.length; i < len; i++) {
+//   	stack.push(cityData[i]);
+//   }
+
+//   while (stack.length) {
+//     // 将数据栈的第一个取出来
+//     item = stack.shift();
+//     // 如果符合就赋值给result
+//     if (item.id === id) {
+//     	result = item.name
+//     }
+//     //如果该节点有子节点，继续添加进入栈底
+//     if (item.children && item.children.length) {
+//     	stack = stack.concat(item.children);
+//     }
+// }
+// return result
+// };
+
+// let r1 = range(cityData, 11112);
+
+// console.log(r1) // 灵芝
+
+
+//深度优先
+// let result = ''
+
+// const deep = (cityData, id) => {
+//   // 没有数据直接返回
+//   if (!cityData || !cityData.length) return;
+//   // 先定义一个数据栈
+//   let stack = []
+//   let item = null
+
+//   //先将第一层节点放入数据栈
+//   for (var i = 0, len = cityData.length; i < len; i++) {
+//     stack.push(cityData[i])
+//   }
+//   // 循环
+//   while (stack.length) {
+//     item = stack.shift()
+//     if (item.id === id) {
+//       result = item.name
+//     }
+//     //如果该节点有子节点，继续添加进入栈顶
+//     if (item.children && item.children.length) {
+//       // 注意这里调换了顺序
+//       stack = item.children.concat(stack);
+//     }
+//   }
+//   return result
+// };
+
+// let r3 = deep(cityData, 11112)
+// console.log(r3) // 灵芝
+</script>
+</body>
+</html>

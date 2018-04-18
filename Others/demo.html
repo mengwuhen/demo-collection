@@ -1,0 +1,35 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="UTF-8">  
+<title>css3实现gif效果图</title>  
+<style type="text/css">  
+@-webkit-keyframes test {  
+  0% {background-position:0px 0;}  
+  100% {background-position:0px -400%;}  
+}  
+@keyframes test {  
+  0% {background-position:0px 0;}  
+  100% {background-position:0px -400%;}  
+} 
+
+/*Steps(<number_of_steps>，<direction>)*/
+
+/*两个参数：第一个参数是一个正值，指定动画分割的段数。
+			第二个参数可选，接受 start 和 end 两个值，指定在每个间隔的起点或是终点发生阶跃变化，默认为end。
+			start 第一帧是动画结束的时候状态； end 第一帧是动画开始的时候状态*/
+
+.run{  
+  height:35px;  
+  width:32px;  
+  text-indent: -9999px;  /*允许使用负值。如果使用负值，那么首行会被缩进到左边。*/
+  -webkit-animation:test 4s steps(4,end) infinite;  
+  animation:test 4s steps(4,end) infinite;  
+  background:url(http://www.web-tinker.com/share/兔斯基揉脸.png);  
+}  
+</style>  
+</head>  
+<body>  
+    <div class="run">兔斯基 卖萌</div>  
+</body>  
+</html> 

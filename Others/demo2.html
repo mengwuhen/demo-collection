@@ -1,0 +1,155 @@
+<!doctype html>  
+<html lang="en">  
+<head>  
+<meta charset="utf-8">  
+    <title>Steps() 参数start和 end 区别</title>  
+    <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans' rel='stylesheet' type='text/css'>  
+    <style>  
+        body,html,div,p,span{margin: 0;padding: 0;}  
+        .both-cars{  
+            border-left: 6px solid #000;  
+            border-right: 6px solid #000;  
+            width: 720px;//4个车子的宽度  
+            height: 300px;  
+            margin: 20px auto;  
+        }  
+        .carbg{  
+            width: 180px;  
+            height: 160px;  
+            position: relative;  
+            animation: drive 4s steps(4, end) infinite;  
+            -webkit-animation: drive 4s steps(4, end) infinite;  
+        }  
+        .carbg-2 {  
+            animation: drive 4s steps(4, start) infinite;  
+            -webkit-animation: drive 4s steps(4, start) infinite;  
+        }  
+        .cartou{  
+            position: absolute;  
+            top: 35px;  
+            left: 50%;  
+            border-radius: 50%;  
+            background: #ed6e46;  
+            width: 100px;  
+            height: 80px;  
+            margin-left: -50px;  
+        }  
+        .cartou-bo{  
+            position: absolute;  
+            left: 15px;  
+            top: 10px;  
+            background: white;  
+            border-radius: 100px 0 0 0;  
+            width: 30px;  
+            height: 30px;  
+        }  
+        .cartou-bo.right{  
+            left: 56px;  
+            transform: rotate(90deg);  
+        }  
+        .carbody{  
+            background:#ed6e46;  
+            border-radius: 100px 100px 10px 10px;  
+            width: 180px;  
+            height: 50px;  
+            position: absolute;  
+            bottom: 40px;  
+            left: 50%;  
+            text-align: center;  
+            color: #fff;;  
+            margin-left: -90px;  
+        }  
+        .rounds{  
+            position: absolute;  
+            bottom: 15px;  
+            left:50%;  
+            width: 140px;  
+            margin-left: -70px;  
+        }  
+        .round.right{  
+            float: right;  
+        }  
+        .round{  
+            width: 50px;  
+            height:50px;  
+            background:#333333;  
+            border-radius: 50%;  
+            display:inline-block;  
+        }  
+        .round:after{  
+            content: '';  
+            position: absolute;  
+            left: 10px;  
+            top: 10px;  
+            background: gray;  
+            border-radius: 50%;  
+            width: 30px;  
+            height: 30px;  
+        }  
+        .round>i{  
+            position: absolute;  
+            left: 18px;  
+            top: 15px;  
+            width: 0;  
+            height: 0;  
+            border-left: 7px dotted transparent;  
+            border-right: 7px dotted transparent;  
+            border-bottom: 15px solid #333333;  
+            z-index: 20;  
+        }  
+        .round>i:after {  
+            content: '';  
+            position: absolute;  
+            left: -7px;  
+            top: 5px;  
+            width: 0;  
+            height: 0;  
+            border-left: 7px dotted transparent;  
+            border-right: 7px dotted transparent;  
+            border-top: 15px solid #333333;  
+        }  
+        .round.right:after{left: 100px;}  
+        .round.right>i{left: 107px;}  
+        @keyframes drive {  
+          to { transform: translateX(720px);}  
+        }  
+        @-webkit-keyframes drive {  
+          to {-webkit-transform: translateX(720px);}  
+        }  
+    </style>  
+</head>  
+<body>  
+    <div class="both-cars">  
+        <div class="carbg">  
+            <div class="cartou">  
+                <span class="cartou-bo"></span>  
+                <span class="cartou-bo right"></span>  
+            </div>  
+            <div class="carbody">(4,end)</div>  
+            <div class="rounds">  
+                <span class="round">  
+                    <i></i>  
+                </span>  
+                <span class="round right">  
+                    <i></i>  
+                </span>  
+            </div>  
+        </div>  
+        <div class="carbg carbg-2">  
+            <div class="cartou">  
+                <span class="cartou-bo"></span>  
+                <span class="cartou-bo right"></span>  
+            </div>  
+            <div class="carbody">(4,start)</div>  
+            <div class="rounds">  
+                <span class="round">  
+                    <i></i>  
+                </span>  
+                <span class="round right">  
+                    <i></i>  
+                </span>  
+            </div>  
+        </div>  
+    </div>  
+</body>  
+</html>  

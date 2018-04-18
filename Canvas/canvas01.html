@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>Canvas demo</title>
+    <!-- canvas元素默认被网格所覆盖。通常来说网格中的一个单元相当于canvas元素中的一像素。栅格的起点为左上角（坐标为（0,0））。所有元素的位置都相对于原点定位。所以图中蓝色方形左上角的坐标为距离左边（X轴）x像素，距离上边（Y轴）y像素（坐标为（x,y））。 -->
+    
+
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body onload="draw();">
+    <canvas id="demo" width="600" height="600"></canvas>
+
+    <script type="text/javascript">
+      function draw(){
+        let canvas = document.getElementById('demo');
+        if (canvas.getContext){
+          let ctx = canvas.getContext('2d');
+
+          ctx.fillStyle = "rgba(200,0,0,0.5)";
+          ctx.fillRect (10, 10, 55, 50);
+
+          ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+          ctx.fillRect (30, 30, 55, 50);
+
+          ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+          ctx.strokeRect (60, 60, 55, 50);
+        }
+      }
+
+      //绘制矩形
+      //fillRect(x, y, width, height)  绘制一个有填充颜色的矩形
+      
+      // strokeRect(x, y, width, height)
+      // 绘制一个矩形的边框
+      
+      // clearRect(x, y, width, height)
+      // 清除指定矩形区域，让清除部分完全透明
+    </script>
+
+
+  </body>
+</html>
