@@ -1,15 +1,64 @@
 <html>
   <head>
-    <title>Canvas demo</title>
+    <title>绘制矩形</title>
     <!-- canvas元素默认被网格所覆盖。通常来说网格中的一个单元相当于canvas元素中的一像素。栅格的起点为左上角（坐标为（0,0））。所有元素的位置都相对于原点定位。所以图中蓝色方形左上角的坐标为距离左边（X轴）x像素，距离上边（Y轴）y像素（坐标为（x,y））。 -->
     
 
     <style type="text/css">
       canvas { border: 1px solid black; }
+
+      .wraper{
+      width: 100%;
+      display: flex;
+      justify-content:center;
+      align-items: flex-start;
+    }
+    .item{
+    }
     </style>
   </head>
   <body onload="draw();">
-    <canvas id="demo" width="600" height="600"></canvas>
+    <dl>
+      <dt>知识补充</dt>
+      <dd>要设置canvas的画布大小，使用的是canvas.width 和 canvas.height；</dd>
+      <dd>要设置画布的实际渲染大小，使用的style或CSS设置的 width 和height，只是简单的对画布进行缩放。</dd>
+      <dd>canvas中的线条大小、文字大小等都需要乘以设备像素比来进行绘制，否则高倍屏下的线条会变细几倍。</dd>
+    </dl>
+
+    <dl>
+      <dt>canvas的实际渲染倍率</dt>
+      <dd>浏览器的window变量中有一个devicePixelRatio的属性，该属性表示了屏幕的设备像素比，即用几个（通常是2个）像素点宽度来渲染1个像素。</dd>
+      <dd>在canvas context中也存在一个 webkitBackingStorePixelRatio 的属性，该属性的值决定了浏览器在渲染canvas之前会用几个像素来来存储画布信息。</dd>
+      <dd>
+        <dl>
+          <dt>屏幕的设备像素比</dt>
+          <dd>var devicePixelRatio = window.devicePixelRatio || 1;</dd>
+        </dl>
+      </dd>
+      <dd>
+        <dl>
+          <dt>浏览器在渲染canvas之前存储画布信息的像素比</dt>
+          <dd>var backingStoreRatio = context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 1;</dd>
+        </dl>
+      </dd>
+      <dd>
+        <dl>
+          <dt>canvas的实际渲染倍率</dt>
+          <dd>var ratio = devicePixelRatio / backingStoreRatio;</dd>
+        </dl>
+      </dd>
+      <dd></dd>
+    </dl>
+
+    <div class="wraper">
+      <div class="item">
+        <canvas id="demo" width="600" height="600"></canvas>
+      </div>
+    </div>
 
     <script type="text/javascript">
       function draw(){
@@ -36,6 +85,8 @@
       
       // clearRect(x, y, width, height)
       // 清除指定矩形区域，让清除部分完全透明
+      // 
+      
     </script>
 
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>beginPath()和closePath()</title>
+	<style>
+		canvas{
+			border:  1px solid red;
+		}
+		.wraper{
+			width: 100%;
+			display: flex;
+			justify-content:center;
+			align-items: flex-start;
+		}
+		.item{
+			/*margin: 0 auto;*/
+
+			/*height: 150px;
+			width: 150px;*/
+		}
+	</style>
+</head>
+<body>
+	<div class="wraper">
+		<div class="item">
+			<canvas id='demo' width=600, height=600, style="width:300px;height:300px;"></canvas>
+		</div>
+		
+	</div>
+
+	<script>
+	window.onload = function () {
+		// 在绘制图形路径时，一定要先调用beginPath()。beginPath()方法将会清空内存中之前的绘制路径信息。如果不这样做，对于绘制单个图形可能没什么影响，但是在绘制多个图形时(例如上面示例的两条直线)，将会导致路径绘制或者颜色填充等操作出现任何意料之外的结果。
+		let canvas = document.getElementById('demo')
+		if(canvas.getContext){
+			let ctx = canvas.getContext('2d')
+			// 确定线条颜色 ，线宽
+			// ctx.strokeStyle = 'pink'
+			// ctx.lineWidth= 10
+			// ctx.beginPath()
+			// ctx.moveTo(30,30)
+			// ctx.lineTo(60,30)
+			// ctx.lineTo(60,60)
+			// ctx.lineTo(80,60)
+			// ctx.stroke()
+			// ctx.closePath()
+
+
+			ctx.strokeStyle = 'red';
+			ctx.lineWidth = 2;
+			ctx.beginPath();
+			ctx.moveTo(50, 10);
+			ctx.lineTo(150, 10);
+			ctx.lineTo(150,200);
+			ctx.lineTo(200,200);
+			ctx.lineTo(200,150);
+			ctx.stroke();
+			ctx.closePath();
+
+			ctx.strokeStyle = 'blue'; 
+			ctx.beginPath(); 
+			ctx.moveTo(250, 10); 
+			ctx.lineTo(350,10); 
+			ctx.lineTo(350,200); 
+			ctx.lineTo(400,200); 
+			ctx.lineTo(400,150); 
+			ctx.closePath(); 
+			ctx.stroke();
+
+
+		}
+	}
+	</script>
+</body>
+</html>

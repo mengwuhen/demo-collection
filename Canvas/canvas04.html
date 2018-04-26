@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>色彩 Colors</title>
+	<style>
+		canvas{
+			width: 400px;
+			height: 400px;
+			border:  1px solid red;
+		}
+		.wraper{
+			width: 100%;
+			display: flex;
+			justify-content:center;
+			align-items: flex-start;
+		}
+		.item{
+			/*margin: 0 auto;*/
+
+			height: 400px;
+			width: 400px;
+		}
+	</style>
+</head>
+<body>
+	<div class="wraper">
+		<div class="item">
+			<canvas id='demo'></canvas>
+		</div>
+		
+	</div>
+
+	<script>
+	window.onload = function () {
+		let canvas = document.getElementById('demo')
+		if(canvas.getContext){
+			let ctx = canvas.getContext('2d')
+			// 并设置该对象的作用区域就是线段所在的区域 
+			// createLinearGradient(x0,y0,x1,y1); x0 y0 渐变起始地点  x1 y1 渐变结束点点
+			let canvasGradient = ctx.createLinearGradient(50, 50, 350, 350);
+			// gradient.addColorStop(offset, color);
+			// offset 0到1之间的值，超出范围将抛出INDEX_SIZE_ERR错误
+			//color CSS颜色值 <color>。如果颜色值不能被解析为有效的CSS颜色值 <color>，将抛出SYNTAX_ERR错误
+			canvasGradient.addColorStop(0, "blue");
+			canvasGradient.addColorStop(0.2, "green");
+			canvasGradient.addColorStop(0.2, "red");
+			// 确定线宽
+			ctx.lineWidth = 10;
+			// 确定起始位置
+			ctx.moveTo(50,50)
+			// 确定终止位置
+			ctx.lineTo(350,350)
+			// 确定线条颜色
+			ctx.strokeStyle= canvasGradient
+			// 
+			ctx.stroke()
+		}
+	}
+	</script>
+</body>
+</html>

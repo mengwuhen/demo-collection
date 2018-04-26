@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>学习线性</title>
+	<style>
+		canvas{
+			border:  1px solid red;
+		}
+		.wraper{
+			width: 100%;
+			display: flex;
+			justify-content:center;
+			align-items: flex-start;
+		}
+		
+	</style>
+</head>
+<body>
+	<dl>
+		<dt>线段端点</dt>
+		<dd>在绘制线段时，可以控制线段端点，这个线段端点也称为线帽.控制线段端点绘制有一个属性 lineCap</dd>
+	</dl>
+	<div class="wraper">
+		<div >
+			<canvas id='canvas'  style="width:300px;height:300px;"></canvas>
+		</div>
+	</div>
+
+	<dl>
+		<dt>线段连接点</dt>
+		<dd>在Canvas中绘制路径（线段），它总有可能会有相连的部分,控制线段连接点的形状通过lineJoin，默认miter是其默认值。</dd>
+	</dl>
+	<div class="wraper">
+		<div >
+			<canvas id='demo'  style="width:300px;height:300px;"></canvas>
+		</div>
+		
+	</div>
+
+
+	<dl>
+		<dt>绘制五角星</dt>
+		<dd></dd>
+	</dl>
+	<div class="wraper">
+		<div >
+			<canvas id='$demo'  style="width:300px;height:300px;"></canvas>
+		</div>
+		
+	</div>
+
+	<script>
+		window.onload = function () {
+			let canvas = document.getElementById('canvas')
+			let ctx = canvas.getContext('2d')
+			let devicePixelRatio = window.devicePixelRatio || 1
+			let backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+			ctx.mozBackingStorePixelRatio ||
+			ctx.msBackingStorePixelRatio ||
+			ctx.oBackingStorePixelRatio ||
+			ctx.backingStorePixelRatio || 1
+			let ratio = devicePixelRatio / backingStoreRatio
+			canvas.width = canvas.clientWidth * 2
+			canvas.height = canvas.clientHeight * 2
+
+			if(canvas.getContext){
+
+				ctx.lineWidth = 40
+				ctx.strokeStyle = 'blue'
+			//线段末端以圆形结束
+			ctx.lineCap = 'round'
+
+			ctx.beginPath()
+			ctx.moveTo(20,20)
+			ctx.lineTo(500,20)
+			ctx.stroke()
+			ctx.closePath()
+
+			ctx.lineWidth = 40
+			ctx.strokeStyle = 'red'
+			ctx.lineCap = 'butt'
+
+			ctx.beginPath()
+			ctx.moveTo(20,100)
+			ctx.lineTo(500,100)
+			ctx.stroke()
+			ctx.closePath()
+
+			ctx.lineWidth = 40
+			ctx.strokeStyle = 'pink'
+			//线段末端以方形结 但是增加了一个宽度和线段相同，高度是线段厚度一半的矩形区域
+			ctx.lineCap = 'square'
+
+			ctx.beginPath()
+			ctx.moveTo(20,300)
+			ctx.lineTo(500,300)
+			ctx.stroke()
+			ctx.closePath()
+
+		}
+
+		let  $canvas = document.getElementById('demo')
+		let  $ctx = $canvas.getContext('2d')
+		$canvas.width = $canvas.clientWidth * 2
+		$canvas.height = $canvas.clientHeight * 2
+
+		$ctx.lineWidth = 40
+		$ctx.strokeStyle = 'blue'
+		//线段末端以圆形结束
+		$ctx.lineCap = 'round'
+		//通过填充一个额外的，圆心在相连部分末端的扇形，绘制拐角的形状。圆角的半径是线段的宽度
+		$ctx.lineJoin = 'round'
+		$ctx.beginPath()
+		$ctx.moveTo(20,20)
+		$ctx.lineTo(200,20)
+		$ctx.lineTo(200,100)
+		$ctx.stroke()
+		$ctx.closePath()
+
+		//通过填充一个额外的，圆心在相连部分末端的扇形，绘制拐角的形状。圆角的半径是线段的宽度
+		$ctx.lineWidth = 40
+		$ctx.strokeStyle = 'green'
+		$ctx.lineJoin = 'bevel'
+		$ctx.beginPath()
+		$ctx.moveTo(10,50)
+		$ctx.lineTo(300,50)
+		$ctx.lineTo(300,200)
+		$ctx.stroke()
+		$ctx.closePath()
+
+
+		$ctx.lineWidth = 40
+		$ctx.strokeStyle = 'pink'
+		$ctx.lineJoin = 'miter'
+		$ctx.beginPath()
+		$ctx.moveTo(100,200)
+		$ctx.lineTo(500,200)
+		$ctx.lineTo(400,500)
+		$ctx.stroke()
+		$ctx.closePath()
+
+		//五角星
+		//
+		let  _canvas = document.getElementById('$demo')
+		let  _ctx = _canvas.getContext('2d')
+		_canvas.width = _canvas.clientWidth * 2
+		_canvas.height = _canvas.clientHeight * 2
+
+		_ctx.lineWidth = 10
+		_ctx.strokeStyle = 'blue'
+		// _ctx.moveTo(300,300)
+		for (var i = 0; i < 5; i++) {
+		 _ctx.lineTo( Math.cos( (18 + 72*i)/180 * Math.PI ) * 100 + 200, -Math.sin( (18 + 72*i)/180 * Math.PI ) * 100 + 120 );
+		 _ctx.lineTo( Math.cos( (54 + 72*i)/180 * Math.PI ) * 50 + 200, -Math.sin( (54 + 72*i)/180 * Math.PI ) * 50 + 120 ); }
+		 _ctx.closePath();
+		 _ctx.stroke();
+	}
+
+
+</script>
+</body>
+</html>

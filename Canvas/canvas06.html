@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>绘制虚线</title>
+	<style>
+		canvas{
+			border:  1px solid red;
+		}
+		.wraper{
+			width: 100%;
+			display: flex;
+			justify-content:center;
+			align-items: flex-start;
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="wraper">
+		<div >
+			<canvas id='canvas'  style="width:300px;height:300px;"></canvas>
+		</div>
+		
+	</div>
+
+	<script>
+	window.onload = function () {
+		let canvas = document.getElementById('canvas')
+		let ctx = canvas.getContext('2d')
+		let devicePixelRatio = window.devicePixelRatio || 1
+		let backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+                    ctx.mozBackingStorePixelRatio ||
+                    ctx.msBackingStorePixelRatio ||
+                    ctx.oBackingStorePixelRatio ||
+                    ctx.backingStorePixelRatio || 1
+        let ratio = devicePixelRatio / backingStoreRatio
+        canvas.width = canvas.clientWidth * 2
+        canvas.height = canvas.clientHeight * 2
+
+		if(canvas.getContext){
+			
+			ctx.lineWidth = 4
+			ctx.strokeStyle = 'blue'
+			// 按照这个数组进行循环
+			ctx.setLineDash([10,20,30,40])
+
+			ctx.beginPath()
+			ctx.moveTo(20,20)
+			ctx.lineTo(500,500)
+			ctx.stroke()
+			ctx.closePath()
+		}
+	}
+	</script>
+</body>
+</html>
