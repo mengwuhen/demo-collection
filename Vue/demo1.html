@@ -6,9 +6,15 @@
 	<title></title>
 </head>
 <body>
+
+	<div id="demo" >{{name}}</div>
+
 	<script>
 		let vm = new Vue({
-  	
+  			el: '#demo',
+  			data:{
+  				name:'shijie'
+  			}
 		})
 		console.log(vm)
 	</script>
