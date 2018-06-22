@@ -7,6 +7,7 @@
 <body>
 	<script>
 		var quickSort = function(arr) {
+			debugger
 		　　if (arr.length <= 1) { return arr; }
 		    // 取数组的中间元素作为基准
 		　　var pivotIndex = Math.floor(arr.length / 2);
@@ -23,10 +24,12 @@
 		　　　　　　right.push(arr[i]);
 		　　　　}
 		　　}
+			debugger
 		　　return quickSort(left).concat([pivot], quickSort(right));
 		};
 
 		let arr = [12,56,45,32,14,20,16]
+		quickSort(arr)
 	</script>
 </body>
 </html>

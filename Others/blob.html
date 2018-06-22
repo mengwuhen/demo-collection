@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>blob</title>
+	<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+</head>
+<body>
+	<a download="data.txt" id="getData">下载</a>   
+	
+	<script>
+		var data= 'Hello world!';  
+		var blob = new Blob([data], {   
+			type: 'text/html,charset=UTF-8'   
+		});
+		window.URL = window.URL || window.webkitURL; 
+		document.querySelector("#getData").href = URL.createObjectURL(blob);
+	</script>
+</body>
+</html>
