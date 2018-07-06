@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>echarts</title>
+	<script src='../package/echarts.js'></script>
+	<script src='../package/jquery-3.3.1.js'></script>
+	<script src='../package/dataTool.js'></script>
+
+	<style>
+		#main {
+			margin: 0 auto;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="main" style="width: 1200px;height:800px;"></div>
+
+	<script type="text/javascript">
+		// 基于准备好的dom，初始化echarts实例
+		var myChart = echarts.init(document.getElementById('main'));
+
+
+		// app.title = '力引导布局';
+
+		myChart.showLoading();
+
+
+		$.get('data/assets/data/data.gexf', function (xml) {
+			myChart.hideLoading();
+			var graph = echarts.dataTool.gexf.parse(xml);
+			var categories = [];
+			for (var i = 0; i < 9; i++) {
+				categories[i] = {
+					name: '类目' + i
+				};
+			}
+			console.warn(categories)
+
+			graph.nodes.forEach(function (node) {
+				node.itemStyle = null;
+				node.symbolSize = 10 ;
+				node.value = node.symbolSize;
+				node.category = node.attributes.modularity_class;
+				node.x = node.y = null;
+				node.draggable = true;
+			});
+			console.warn(graph.nodes)
+			console.warn(graph.links)
+
+			option = {
+				color: ["rgb(100, 189, 233)", "rgb(73, 144, 226)", "rgb(66, 168, 182)", "rgb(68, 180, 72)", "rgb(52, 166, 55)", "rgb(209, 81, 82)", "rgb(152, 210, 89)", "rgb(135, 231, 253)", "rgb(179, 179, 179)", "rgb(45, 132, 226)", "rgb(48, 131, 51)"], // 决定了 全局的色调
+				backgroundColor: '#fff',
+				title: {
+					text: '力导向图',
+					subtext: 'megwuhen',
+					x:'center',
+        			y: 10,
+					orient : 'vertical', // 决定了标题的位置
+					textAlign: 'center',
+					borderColor: 'red',
+				},
+				tooltip: {},
+				legend: [{
+					orient : 'vertical',
+					x: 'left',  // 决定了 图例的位置
+					data: categories.map(function (a) {
+						return a.name;
+					})
+				}],
+				animation: true,
+				series: [{
+					name: '',
+					type: 'graph', // 决定 图表的leix
+					layout: 'force',
+
+					data: graph.nodes, // 节点个数
+					links: graph.links, // 节点关系
+					categories: categories, // 与图例相对应
+
+					draggable: true,  // 节点是否可拖拽，只在使用力引导布局的时候有用。
+					focusNodeAdjacency: true, // 是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点。
+					roam: true, // 是否开启鼠标缩放和平移漫游
+
+					label: {
+						normal: {
+							position: 'top'
+						}
+					},
+					force: {
+						repulsion: 100
+					},
+					itemStyle: {
+						normal: {
+							label: {
+								show: true
+							},
+							nodeStyle: {
+								brushType: 'both',
+								borderColor: 'rgba(255,215,0,0.6)',
+								borderWidth: 1
+							}
+						}
+					},
+				}],
+
+			};
+
+			myChart.setOption(option);
+		}, 'xml');
+	</script>
+</body>
+
+</html>
