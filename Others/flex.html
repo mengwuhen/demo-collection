@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>flex 布局</title>
+	<style>
+		.demo1{
+			width: 800px;
+			height: 120px;
+			border: 1px solid pink;
+			display: flex;
+			flex-direction: row;  /*flex-direction属性决定主轴的方向（即项目的排列方向）。*/
+			flex-wrap: wrap; /*是否换行*/
+			align-items: center;  /*align-items属性定义项目在交叉轴上如何对齐。*/
+			align-content: flex-start; /*align-content属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。*/
+			justify-content: space-between;  /*justify-content属性定义了项目在主轴上的对齐方式。*/
+
+		}
+		.demo2{
+			width: 800px;
+			height: 120px;
+			border: 1px solid pink;
+			display: inline-flex;
+			flex-direction: row;
+			flex-wrap: nowrap; /*是否换行*/
+			align-items: center; /*align-items属性定义项目在交叉轴上如何对齐。*/
+			justify-content: space-between;
+		}
+		.demo3{
+			width: 800px;
+			height: 120px;
+			border: 1px solid pink;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap; /*是否换行*/
+			align-items: center;
+			justify-content: space-between;
+		}
+		.demo4{
+			width: 800px;
+			height: 120px;
+			border: 1px solid pink;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap; /*是否换行*/
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.item{
+			border: 1px solid #000;
+			width: 200px;
+			height: 40px;
+		}
+		.item2{
+			border: 1px solid #000;
+			width: 300px;
+			height: 40px;
+		}
+		.item3{
+			border: 1px solid #000;
+			width: 200px;
+			height: 40px;
+		}
+		/*order: 定义项目在容器中的排列顺序，数值越小，排列越靠前，默认值为 0*/
+		.order{
+			order: 5;
+		}
+		/*flex-grow属性定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。*/
+		.flexGrow{
+			flex-grow: 2;
+		}
+		/*flex-shrink属性定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。*/
+		.flexShrink{
+			flex-shrink: 2;
+		}
+		/*flex-basis属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为auto，即项目的本来大小。*/
+		.flexBasis{
+			flex-basis: 350px;
+		}
+		/*flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个属性可选。*/
+		.flex{
+			flex: 0 1 350px;
+		}
+		/*align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。*/
+		.alignSelf{
+			/*align-self: auto | flex-start | flex-end | center | baseline | stretch;*/
+			align-self: baseline;
+		}
+	</style>
+</head>
+<body>
+	<div class="demo1">
+		<div class="item ">1</div>
+		<div class="item ">2</div>
+		<div class="item ">3</div>
+		<div class="item flexGrow">4</div>
+		<div class="item order">5</div>
+		<div class="item">6</div>
+	</div>
+
+	<div class="demo2">
+		<div class="item2 ">1</div>
+		<div class="item2 ">2</div>
+		<div class="item2 flexShrink">3</div>
+		<div class="item2">4</div>
+		<div class="item2 ">5</div>
+		<div class="item2">6</div>
+	</div>
+
+	<div class="demo3">
+		<div class="item3">1</div>
+		<div class="item3 flex">2</div>
+		<div class="item3">3</div>
+		<div class="item3">4</div>
+		<div class="item3 flexBasis">5</div>
+		<div class="item3">6</div>
+	</div>
+
+	<div class="demo4">
+		<div class="item4">1</div>
+		<div class="item4">2</div>
+		<div class="item4">3</div>
+		<div class="item4 alignSelf">4</div>
+		<div class="item4">5</div>
+		<div class="item4">6</div>
+	</div>	
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>transition</title>
+
+    <style>
+        .demo{
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            /* transform: scale(0.5); */
+            /* transform: rotate(30deg); */
+            /* transform: translate(500px,0);     */
+            /* transform: skew(30deg); */
+            /* transform: rotate(45deg) skew(45deg) scale(0.5) translate(400px,0); */
+        }
+        .demo:hover{
+            transition: all 2s 1s cubic-bezier(1,0,0,1);
+            /* transform: scale(0.5); */
+            /* transform: rotate(30deg); */
+            transform: translate(500px,0);    
+            /* transform: skew(30deg); */
+        }
+        
+
+
+    </style>
+</head>
+<body>
+    <div class="demo">transition</div>
+</body>
+</html>

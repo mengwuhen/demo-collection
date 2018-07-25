@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>垂直水平居中</title>
+    <style>
+        .demo1_parent{
+            width: 400px;
+            height: 200px;
+            position: relative;
+            border: 1px solid red;
+        }
+        .demo1_son{
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin-left: -50px;
+            margin-top: -50px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000000;
+        }
+
+
+        .demo2_parent{
+            width: 400px;
+            height: 200px;
+            position: relative;
+            border: 1px solid red;
+        }
+
+        .demo2_son{
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            border: 1px solid #000;
+            margin: auto;
+        }
+
+        .demo3_parent{
+            width: 400px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid red;
+        }
+        .demo3_son{
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+
+        .demo4_parent{
+            width: 400px;
+            height: 200px;
+            position: relative;
+            border: 1px solid red;
+        }
+        .demo4_son{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+            transform: translate(-50%,-50%);
+        }
+
+        .demo5_parent{
+            width: 400px;
+            height: 200px;
+            border: 1px solid red;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .demo5_son{
+            margin: 0 auto;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo1_parent">
+        <div class="demo1_son"></div>
+    </div>
+
+    <div class="demo2_parent">
+        <div class="demo2_son"></div>
+    </div>
+
+    <div class="demo3_parent">
+        <div class="demo3_son"></div>
+    </div>
+
+    <div class="demo4_parent">
+        <div class="demo4_son"></div>
+    </div>
+
+    <div class="demo5_parent">
+        <div class="demo5_son"></div>
+    </div>
+</body>
+</html>

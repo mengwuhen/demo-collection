@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Grid布局</title>
+    <style>
+        /* body{
+            width: 0;
+            height: 0;
+        } */
+        .wrapper1{
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 100px 100px 100px;
+            grid-template-rows: 50px 50px 50px ;
+            /* border: 1px solid pink; */
+            /* width: 500px; */
+            /* height: 120px; */
+        }
+        .wrapper1>div{
+            /* width: 100px;
+            height: 20px; */
+            border: 1px solid #000;
+        }
+
+        .item1{
+            /* grid-column-start: 1;
+            grid-column-end: 4; */
+            grid-column:  1/4; /*缩写形式*/
+        }
+        .item3{
+            grid-row: 2/4;
+        }
+    </style>
+</head>
+<body>
+        <div class="wrapper1">
+            <!-- grid-template-columns 决定列数 后面跟几个值就是几列 -->
+            <!-- grid-template-rows 决定行数 后面跟几个值就是几行 -->
+            <div class="item1"></div>
+            <div></div>
+            <div class="item3"></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+</body>
+</html>
