@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>clip-path</title>
+    <style>
+        .demo {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            background-image: url('../assets/img/pittsburgh.jpg');
+            background-size: cover;
+            background-position: center center;
+            -webkit-clip-path: polygon(34% 0, 0% 100%, 100% 100%);
+            clip-path: polygon(34% 0, 0% 100%, 100% 100%);
+
+        }
+
+        .wraper {
+            width: 200px;
+            height: 200px;
+            border: 1px solid pink;
+        }
+
+        .demo2 {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            background-image: url('../assets/img/pittsburgh.jpg');
+            background-size: cover;
+            background-position: center center;
+            clip-path: circle(50% at 50% 50%);
+        }
+
+        .demo3 {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            background-image: url('../assets/img/pittsburgh.jpg');
+            background-size: cover;
+            background-position: center center;
+            clip-path: ellipse(25% 40% at 50% 50%);
+        }
+
+        .demo4{
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            background-image: url('../assets/img/pittsburgh.jpg');
+            background-size: cover;
+            background-position: center center;
+            clip-path: polygon(5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
+        }
+    </style>
+</head>
+
+<body>
+    <dl>
+        <dt>clip-path属性可以创建一个只有元素的部分区域可以显示的剪切区域。</dt>
+        <dd>circle(), ellipse(), polygon()</dd>
+        <div class="wraper">
+            <div class="demo">
+            </div>
+        </div>
+    </dl>
+
+    <dl>
+        <dt>circle 属性值</dt>
+        <div class="wraper">
+            <div class="demo2">
+            </div>
+        </div>
+    </dl>
+
+    <dl>
+        <dt>ellipse 属性值(椭圆)</dt>
+        <dd>ellipse(radius-x, radius-y at x, y)</dd>
+        <div class="wraper">
+            <div class="demo3">
+            </div>
+        </div>
+    </dl>
+
+    <dl>
+        <dt>polygon  属性值(多边形)</dt>
+        <dd>polygon(point1-x, point1-y ,point2-x, point2-y,...) 顺时针方向</dd>
+        <div class="wraper">
+            <div class="demo4">
+            </div>
+        </div>
+    </dl>
+
+
+
+</body>
+
+</html>
