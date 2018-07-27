@@ -31,11 +31,20 @@
         }
 
         .demo:hover{
-            animation: cartoon 5s cubic-bezier(1,0,0,1) 100ms infinite alternate ;
+            animation: cartoon 5s cubic-bezier(1,0,0,1) 100ms 2 alternate ;
         }
     </style>
 </head>
 <body>
+    <dl>
+        <dt>animation 属性是一个简写属性，用于设置六个动画属性</dt>
+        <dd>animation-name 规定需要绑定到选择器的 keyframe 名称</dd>
+        <dd>animation-duration 规定完成动画所花费的时间，以秒或毫秒计</dd>
+        <dd>animation-timing-function 规定动画的速度曲线 &emsp;&emsp;ease/linear/ease-in/ease-out/ease-in-out/cubic-bezier</dd>
+        <dd>animation-delay 规定在动画开始之前的延迟</dd>
+        <dd>animation-iteration-count 规定动画应该播放的次数</dd>
+        <dd>animation-direction  规定是否应该轮流反向播放动画 &emsp;&emsp;normal/alternate 动画应该正常播放/动画应该轮流反向播放</dd>
+    </dl>
     <div class="demo"></div>
 </body>
 </html>
