@@ -12,7 +12,7 @@
 			flex-direction: row;  /*flex-direction属性决定主轴的方向（即项目的排列方向）。*/
 			flex-wrap: wrap; /*是否换行*/
 			align-items: center;  /*align-items属性定义项目在交叉轴上如何对齐。*/
-			align-content: flex-start; /*align-content属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。*/
+			align-content: space-between; /*align-content属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。*/
 			justify-content: space-between;  /*justify-content属性定义了项目在主轴上的对齐方式。*/
 
 		}
@@ -35,6 +35,7 @@
 			flex-wrap: wrap; /*是否换行*/
 			align-items: center;
 			justify-content: space-between;
+			align-content: flex-start; /*属性定义了当作为一个弹性盒子容器的属性时，浏览器如何在容器的侧轴围绕弹性盒子项目分配空间。*/
 		}
 		.demo4{
 			width: 800px;

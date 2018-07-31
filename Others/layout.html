@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>layout</title>
+    <style>
+        .demo1{
+            width: 100%;
+            height: 200px;
+            border: 1px solid #000;
+
+            display: flex;
+        }
+        .demo1_left{
+            width: 200px;
+            background-color: lightblue;
+        }
+
+        .demo1_right{
+            background-color: lawngreen;
+            flex-grow: 1;
+        }
+
+        .demo2{
+            width: 100%;
+            height: 200px;
+            border: 1px solid #000;
+
+            display: flex;
+        }
+
+        .demo2_left{
+            width: 200px;
+            background-color: lightblue;
+        }
+
+        .demo2_center{
+            background-color: pink;
+            flex-grow: 1;
+        }
+
+        .demo2_right{
+            width: 200px;
+            background-color: lawngreen;
+            
+        }
+
+    </style>
+</head>
+<body>
+    <div class="demo1">
+        <div class="demo1_left"></div>
+        <div class="demo1_right"></div>
+    </div>
+
+    <div class="demo2">
+        <div class="demo2_left"></div>
+        <div class="demo2_center"></div>
+        <div class="demo2_right"></div>
+    </div>
+</body>
+</html>
