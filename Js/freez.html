@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> JS 对象之扩展、密封及冻结区别</title>
+    <style>
+        .wrapper{
+            display: grid;
+            width: 500px;
+            height: 500px;
+            grid-template-columns:  28% 24% 24% 24%;
+            grid-template-rows:  25% 25% 25% 25% ;
+            /* justify-content: center; */
+        }
+        .wrapper>div{
+            border: 1px solid #000;
+            align-items: center;
+            /* justify-content: center; */
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            align-self: center;
+            line-height: 123px;
+        }
+        .wrapper>div:nth-child(odd){
+            background: pink;
+        }
+        .wrapper>div:nth-child(even){
+            background: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <h3>JS 对象之扩展、密封及冻结区别</h3>
+    <div class="wrapper">
+        <div class="item1"></div>
+        <div class="item2">添加属性</div>
+        <div class="item3">删除属性</div>
+        <div class="item4">修改属性</div>
+
+        <div class="item5">preventExtensions</div>
+
+        <div class="item6"> false</div>
+        <div class="item7">true</div>
+        <div class="item8">true</div>
+        <div class="item9">seal</div>
+        <div class="item10">false</div>
+        <div class="item11">false</div>
+        <div class="item12">true</div>
+        <div class="item13">freeze</div>
+        <div class="item14">false</div>
+        <div class="item15">false</div>
+        <div class="item16">false</div>
+    </div>
+    
+    <script>
+        var obj1 = {
+            name:'menguwhen',
+            sex: 'man',
+            age:24
+        }
+
+        var obj2 = {
+            name:'menguwhen',
+            sex: 'man',
+            age:24
+        }
+
+        var obj3 = {
+            name:'menguwhen',
+            sex: 'man',
+            age:24
+        }
+
+        // 扩展特性
+        Object.isExtensible(obj1)  //判断一个对象是否是可扩展的
+        Object.preventExtensions() //preventExtensions() 方法让一个对象变的不可扩展，也就是永远不能再添加新的属性,不可扩展的对象的属性通常仍然可以被删除,能阻止一个对象不能再添加新的自身属性，仍然可以为该对象的原型添加属性
+
+
+        // 密封特性
+        Object.isSealed()
+        Object.seal()  // 密封对象是指那些不能添加新的属性，不能删除已有属性，以及不能修改已有属性的可枚举性、可配置性、可写性，但可以修改已有属性的值的对象。
+
+        // 冻结特性
+        Object.isFrozen()
+        Object.freeze()  // 冻结对象是指那些不能添加新的属性，不能修改已有属性的值，不能删除已有属性，以及不能修改已有属性的可枚举性、可配置性、可写性的对象。也就是说，这个对象永远是不可变的。
+
+        // demo1 
+        Object.preventExtensions(obj1)
+        console.log( Object.isExtensible(obj1))
+        obj1.name = 'jie'
+        console.warn(obj1.name) // 不可扩展的对象 可以修改属性值
+        delete obj1.sex
+        console.warn(obj1) // 不可扩展的对象 可以删除属性
+
+
+        // demo2
+        Object.seal(obj2)
+        console.warn(Object.isSealed(obj2))
+
+        obj2.area = 'shanghai'
+        console.warn(obj2)
+
+        delete obj2.name
+        console.warn(obj2)
+
+        obj2.name = 'jie'
+        console.warn(obj2) // 可修改属性
+
+        // demo3 
+        Object.freeze(obj3)
+       console.warn(Object.isFrozen(obj3))
+
+        obj3.area = 'shanghai'
+        console.warn(obj3)
+
+        delete obj3.name
+        console.warn(obj3)
+
+        obj3.name = 'jie'
+        console.warn(obj3) // 可修改属性
+
+        // 深冻结 和 浅冻结
+        // 倘若一个对象的属性是一个对象，那么对这个外部对象进行冻结，内部对象的属性是依旧可以改变的，这就叫浅冻结，若把外部对象冻结的同时把其所有内部对象甚至是内部的内部无限延伸的对象属性也冻结了，这就叫深冻结。
+        function deepFreeze(obj){
+            Object.freeze(obj)
+            for( var key in obj){
+                prop = obj[key];
+                if(!obj.hasOwnProperty(key) || !(typeof prop === "object") || Object.isFrozen(prop) ){
+                    continue
+                } 
+                deepFreeze(obj[key])
+            }
+
+            return 
+        }
+
+        var testObj = {
+            age: 12,
+            area:{
+                contury:{
+                    name: 'china',
+                    province:{
+                        name:'shang hai'
+                    }
+                } 
+            }
+        }
+        deepFreeze(testObj)
+
+        console.warn(Object.isFrozen(testObj['area']))
+    </script>
+</body>
+</html>

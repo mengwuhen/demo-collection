@@ -108,32 +108,6 @@
 	
 
 	<script>
-		function drawSector(ctx, x, y,r, sDeg, eDeg) { 
-			// 初始保存
-		 	ctx.save();
-		  	//位移到目标点
-		   	ctx.translate(x, y);
-		    ctx.beginPath();
-		    // 画出圆弧
-			ctx.arc(0, 0, r, sDeg, eDeg); 
-			// 再次保存以备旋转 
-			ctx.save(); 
-			// 旋转至起始角度 
-			ctx.rotate(eDeg); 
-			// 移动到终点，准备连接终点与圆心 
-			ctx.moveTo(r, 0); 
-			// 连接到圆心 
-			ctx.lineTo(0, 0); 
-			// 还原 
-			ctx.restore(); 
-			// 旋转至起点角度 
-			ctx.rotate(sDeg); 
-			// 从圆心连接到起点 
-			ctx.lineTo(r, 0); 
-			ctx.closePath(); 
-			// 还原到最初保存的状态 
-			ctx.restore(); 
-		}
 
 		window.onload = function () {
 			let canvas = document.getElementById('canvas')
@@ -148,67 +122,7 @@
 			canvas.width = canvas.clientWidth * 2
 			canvas.height = canvas.clientHeight * 2
 
-			if(canvas.getContext){
-				ctx.fillStyle = '#FA6900';
-				ctx.shadowOffsetX = 5; 
-				ctx.shadowOffsetY = 5; 
-				ctx.shadowBlur = 4; 
-				ctx.shadowColor = 'rgba(204, 204, 204, 0.5)'; 
-				ctx.fillRect(10,10,15,150);
-				ctx.save(); // 将第一个状态推到堆栈中
 
-				ctx.fillStyle = '#f36'; 
-				ctx.shadowOffsetX = 10; 
-				ctx.shadowOffsetY = 10; 
-				ctx.shadowBlur = 4; 
-				ctx.shadowColor = 'rgba(204, 204, 204, 0.5)'; 
-				ctx.fillRect(50,10,30,150); 
-				ctx.save(); // 将第二个状态推到堆栈中
-
-				ctx.fillStyle = '#A7DBD7'; 
-				ctx.shadowOffsetX = 15; 
-				ctx.shadowOffsetY = 15; 
-				ctx.shadowBlur = 4; 
-				ctx.shadowColor = 'rgba(204, 204, 204, 0.5)'; 
-				ctx.fillRect(110,10,45,150); 
-				ctx.save(); // 将第三个状态推到堆栈中 
-
-				ctx.restore(); // 取出堆栈3（第三个状态） 
-
-				ctx.beginPath(); 
-				ctx.arc(225, 75, 22, 0, Math.PI*2, true); 
-				ctx.closePath(); 
-				ctx.fill(); 
-
-				ctx.restore(); // 取出堆栈2（第二个状态） 
-
-				ctx.beginPath(); 
-				ctx.moveTo(320, 75);
-				//绘制扇形关键点是通过moveTo()把起始点位置设置为圆心处，然后通过closePath()闭合路径。
-				ctx.arc(320, 75, 60, 0, Math.PI* 1.5); 
-				ctx.closePath(); 
-				ctx.fill(); 
-
-				ctx.restore(); // 取出堆栈1（第一个状态） 
-
-				ctx.beginPath(); 
-				ctx.arc(400, 75, 8, 0, Math.PI*2, true); 
-				ctx.closePath(); 
-				ctx.fill(); 
-			}
-
-			let $canvas = document.getElementById('demo')
-			let $ctx = $canvas.getContext('2d')
-			$canvas.width = $canvas.clientWidth * 2
-			$canvas.height = $canvas.clientHeight * 2
-
-			let deg = Math.PI / 180;
-			let obj = { x: 300, y: 300, r: 80, sDeg: [30, 111, 190, 233, 280, 345], eDeg: [111, 190, 233, 280, 345, 30], style: ['#f00', '#0f0', '#00f', '#789', '#abcdef'] } 
-			for (var i = 0; i < obj.sDeg.length; i++) {
-				 drawSector($ctx,obj.x, obj.y, obj.r, obj.sDeg[i] * deg, obj.eDeg[i] * deg); 
-				 $ctx.fill(); 
-				 $ctx.fillStyle = obj.style[i]; 
-			}
 
 		}
 

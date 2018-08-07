@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Promise</title>
+</head>
+
+<body>
+
+    <script>
+        function Parent() {
+            this.a = 1;
+            this.b = [1, 2, this.a];
+            this.c = {
+                demo: 5
+            };
+            this.show = function () {
+                console.log(this.a, this.b, this.c.demo);
+            }
+        }
+
+        function Child() {
+            this.a = 2;
+            this.change = function () {
+
+                this.b.push(this.a);
+                this.a = this.b.length;
+                this.c.demo = this.a++;
+            }
+        }
+        Child.prototype = new Parent();
+
+        var parent = new Parent();
+        var child1 = new Child(); //
+        var child2 = new Child();
+
+        child1.a = 11;
+        child2.a = 12;
+        
+        parent.show(); // 1 , [1,2,1] , 5
+
+        child1.show(); // 11 , [1,2,1] , 5
+
+        child2.show(); // 12 , [1,2,1] , 5
+
+        child1.change(); // 4 ,[1,2,1,11],4
+        child2.change(); //
+
+        parent.show(); // 1, [1,2,1,11,12], 5
+        child1.show(); // 11, [1,2,1,11,12], 5
+        child2.show(); // 12, [1,2,1,11,12],5
+
+        // Array.prototype.sort2= function(cb){
+        //     var temp;
+        //     debugger
+            
+		// 	var length = this.length;
+        //     if(length < 10) {
+        //         // 插入排序
+        //     } else {
+        //         // 快速排序
+        //     }
+
+        //     // 冒泡排序
+		// 	for(var i=0; i<length; i++) {
+		// 		for(var j=i+1; j<length; j++) {
+		// 			var result = cb(this[i],this[j]);
+		// 			if(result > 0 ) {
+		// 				temp = this[i];
+		// 				this[i] = this[j];
+		// 				this[j] = temp;
+		// 			}
+		// 		}
+		// 	}
+        // }
+        // var a = [1,5,6,7,8,23,4,0,3,5,6]
+        // a.sort2((a,b) => a-b)
+        // console.log(a)
+    </script>
+</body>
+
+</html>

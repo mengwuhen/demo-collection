@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>immutable</title>
+    <script src="../package/immutable.js"></script>
+</head>
+<body>
+    
+    <script>
+            console.log(Immutable)
+
+            const obj = Immutable.fromJS({a:'123',b:'234'}).toJS()
+            obj.a = 'shi'
+            console.warn(obj.a)
+
+            const map1 = Immutable.Map({ a: 1, b: 2, c: 3 })
+            const map2 = map1.set('b', 50)
+
+            console.warn(map1.get('b') + " vs. " + map2.get('b') )// 2 vs. 50
+
+    </script>
+</body>
+</html>

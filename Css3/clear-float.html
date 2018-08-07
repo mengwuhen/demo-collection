@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>float</title>
+    <style>
+        .father{
+            border: 1px solid red;
+        }
+        .son{
+            float: left;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+        .father::after{
+            content: '';
+            clear: both;
+            display: block;
+            height: 0;
+            overflow: hidden;
+            visibility: hidden;
+        }
+        .father{
+            /* 兼容ie6,7 */
+            zoom: 1; 
+        }
+
+        .f1{
+            border: 1px solid red;
+            overflow: hidden;
+        }
+        .s1{
+            float: left;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+
+        .f2{
+            border: 1px solid red;
+        }
+        .s2{
+            float: left;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="father">
+        <div class="son"></div>
+    </div>
+
+    <div class="f1">
+        <div class="s1"></div>
+    </div>
+
+    <div class="f2">
+        <div class="s2"></div>
+        <br clear="both" />        
+    </div>
+</body>
+</html>

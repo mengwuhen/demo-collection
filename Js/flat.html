@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>flat</title>
+</head>
+
+<body>
+    <dl>
+        <dt>js 数组扁平化</dt>
+    </dl>
+
+    <script>
+        // 方法一
+        function flat(arr) {
+            var result = []
+            for (let el of arr) {
+                if (Array.isArray(el)) {
+                    // concat() 方法用于合并两个或多个数组。此方法不会更改现有数组，而是返回一个新数组。
+                    result = result.concat(flat(el))
+                } else {
+                    result.push(el)
+                }
+            }
+            return result
+        }
+        console.warn(flat([1, 2, [3, 4, [5, 6, 7]]]))
+        // 方法二
+        function* _flat(el) {
+            if (Array.isArray(el)) {
+                for (let i of el) {
+                    yield* _flat(i)
+                }
+            } else {
+                yield el
+            }
+        }
+
+        function flat2(arr) {
+            return [..._flat(arr)]
+        }
+        console.warn(flat2([1, 2, [3, 4, [5, 6, 7]]]))
+
+        // 方法三
+        function flat3(arr, depth, result) {
+            result || (result = [])
+            if (arr === null) return result;
+                for (let val of arr) {
+                    if (depth > 0 && Array.isArray(val)) {
+                        if (depth > 1) {
+                            flat3(val, depth - 1, result);
+                        } else {
+                            result.push(...val);
+                        }
+                    } else {
+                        result[result.length] = val;
+                    }
+                }
+            return result
+        }
+        console.warn(flat3([1, 2, [3, 4, [5, 6, 7]]],1))
+
+        // 方法四
+        function flat4(arr){
+            return arr.toString().split(',')
+        }
+        console.warn(flat4([1, 2, [3, 4, [5, 6, 7]]]))
+        // 方法五
+        function flat5(arr){
+            return JSON.stringify(arr).replace(/[|]/g,'').split(',')
+        }
+        console.warn(flat4([1, 2, [3, 4, [5, 6, 7]]]))
+        //  方法六
+        function flat6(arr){
+           return arr.reduce((res,cur) => {
+               if(Array.isArray(cur)){
+                   return [...res, ...flat6(cur)]
+               } else {
+                   return [...res,cur]
+               }
+           },[])
+        }
+        console.warn(flat6([1, 2, [3, 4, [5, 6, 7]]]))
+
+    </script>
+</body>
+
+</html>

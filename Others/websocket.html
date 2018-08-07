@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>websocket</title>
+    <style>
+        .data{
+            width: 500px;
+            height: 500px;
+            border: 1px solid #000;
+            margin: 0 auto;
+        }
+    </style>
+    <script src="../package/echarts.js"></script>
+    <script src="../package/lodash.js"></script>
+</head>
+
+<body>
+
+    <div class="data" id='main'>
+
+    </div>
+    <!-- //“证券简称,最新价,涨跌额,涨跌幅,成交量,成交额” -->
+    <!-- s_sh000001=上证指数,2745.8868,12.0049,0.44,1320828,14389445↵ -->
+    <script>
+        // var _ = require('lodash');
+      
+
+        var $data = null;
+        var arr = []
+
+        var ws = new WebSocket("ws://hq.sinajs.cn/wskt?list=s_sh000001");
+       
+        ws.onopen = function () {
+            console.log('链接建立')
+        }
+        ws.onmessage = function (evt) {
+            console.warn(evt)
+            // $data = _.split(evt.data,',')
+            // console.log($data)
+            // arr.push(evt.data)
+        };
+        ws.onerror =  function (e){
+            console.warn(e)
+        }
+        ws.onclose = function (evt) {
+            console.log("Connection closed.");
+        };
+        // var myChart = echarts.init(document.getElementById('main'));
+
+        // // 指定图表的配置项和数据
+       
+
+        // var data = [];
+        // for (var i = 0; i < 1000; i++) {
+        //     data.push(randomData());
+        // }
+        // // console.warn(data)
+
+        // option = {
+        //     title: {
+        //         text: '动态数据'
+        //     },
+        //     tooltip: {
+        //         trigger: 'axis',
+        //         formatter: function (params) {
+        //             params = params[0];
+        //             var date = new Date(params.name);
+        //             return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+        //         },
+        //         axisPointer: {
+        //             animation: false
+        //         }
+        //     },
+        //     xAxis: {
+        //         type: 'time',
+        //         splitLine: {
+        //             show: false
+        //         }
+        //     },
+        //     yAxis: {
+        //         type: 'value',
+        //         boundaryGap: [0, '100%'],
+        //         splitLine: {
+        //             show: false
+        //         }
+        //     },
+        //     series: [{
+        //         name: '模拟数据',
+        //         type: 'line',
+        //         showSymbol: false,
+        //         hoverAnimation: false,
+        //         data: data
+        //     }]
+        // };
+
+        // setInterval(function () {
+
+        //     for (var i = 0; i < 5; i++) {
+        //         data.shift();
+        //         data.push(randomData());
+        //     }
+
+        //     myChart.setOption({
+        //         series: [{
+        //             data: data
+        //         }]
+        //     });
+        // }, 5000);
+
+        // myChart.setOption(option);
+    </script>
+</body>
+
+</html>

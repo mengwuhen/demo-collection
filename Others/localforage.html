@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>localforage</title>
+	<script src="../package/localforage.js"></script>
+</head>
+<body>
+	<script>
+		var users = [ {id: 1, fullName: 'Matt'}, {id: 2, fullName: 'Bob'} ];
+		window.onload = function(){
+			// localforage.setItem('users', users, function(err,result) {
+			// 	console.warn(result);
+			// })
+			// localforage.setDriver(localforage.LOCALSTORAGE)
+
+			localforage.config({
+				driver: localforage.WEBSQL,
+				name: 'shijie',
+				storeName : 'test',
+				description: 'ceshi'
+			})
+
+
+
+			localforage.ready().then(() => {
+				console.warn(localforage.driver())
+			})
+
+			localforage.dropInstance().then((res) => {
+				console.warn('shan chu ')
+				})
+
+			// localforage.getItem('shijie')
+			// .then((res) => {
+			// 	console.warn(res)
+			// })
+
+			// localforage.setItem('users',users)
+
+			// .then(function(res){
+			// 	return localforage.getItem('users');
+			// })
+			// .then(function(val){
+			// 	console.warn(val)
+			// })
+			// .then(function(val){
+			// 	localforage.length().then((len) => {
+			// 		console.warn(len)
+			// 	})
+			// })
+			// .then(function(val){
+			// 	localforage.keys().then((val) => {
+			// 		console.warn(val)
+			// 	})
+			// })
+			// .then((val) => {
+				
+			// })
+
+
+		}  
+
+
+	</script>
+</body>
+</html>

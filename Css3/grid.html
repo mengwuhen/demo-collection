@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Grid布局</title>
+    <style>
+        /* body{
+            width: 0;
+            height: 0;
+        } */
+        .wrapper1{
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 100px 100px 100px; 
+            grid-template-rows: 50px 50px 50px ;
+            /* border: 1px solid pink; */
+            /* width: 500px; */
+            /* height: 120px; */
+        }
+        .wrapper1>div{
+            /* width: 100px;
+            height: 20px; */
+            border: 1px solid #000;
+        }
+
+        .item1{
+            /* grid-column-start: 1;
+            grid-column-end: 4; */
+            grid-column:  1/4; /*缩写形式*/
+        }
+        .item3{
+            grid-row: 2/4;
+        }
+
+        .wrapper2{
+            margin-top: 20px;
+            border: 1px solid #000;
+            display: grid;
+            grid-template-columns: 33.33% 33.33% 33.33%;
+            grid-column-gap: 2px;
+            /* 指定网格线的大小，也可以说是网格子项之间的间距。  */
+            grid-template-rows: 50px 50px;
+            grid-row-gap: 2px;
+            /* 让网格子项的内容和列轴对齐（align-items则相反，是和行轴对齐），这个值对容器里面的所有网格子项都有用。 */
+            /* justify-items: start | end | center | stretch */
+            /* justify-items: center; */
+
+            /* 让网格子项的内容和行轴对齐，这个值对容器里面的所有网格子项都有用。
+            align-items: start | end | center | stretch; */
+            /* align-items: center; */
+
+            /* justify-content  如果用像px非弹性单位定义的话，总网格区域大小有可能小于网格容器，这时候你可以设置网格的对齐方式（垂直于列网格线对齐）。 */
+            /* justify-content: start | end | center | stretch | space-around | space-between | space-evenly ; */
+
+            justify-content: center;
+
+            /* align-content  如果用像px非弹性单位定义的话，总网格区域大小有可能小于网格容器，这时候你可以设置网格的对齐方式（垂直于行网格线对齐）。 */
+            /* align-content: start | end | center | stretch | space-around | space-between | space-evenly */
+
+            align-content: center;
+
+            /* grid-auto-flow 在没有设置网格项的位置时，这个属性控制网格项怎样排列。 */
+            /* grid-auto-flow: row | column | row dense | column dense */
+            grid-auto-flow: row;
+        }
+        .wrapper2>div{
+            border: 1px solid pink;
+        }
+
+        /* 网格子项的属性 */
+        .div2{
+            /* grid-column-start/grid-column-end/grid-row-start/grid-row-end/grid-column/grid-row */
+            /* 通过网格线来定义网格项的位置。grid-column-start、grid-row-start定义网格项的开始位置，grid-column-end、grid-row-end定义网格项的结束位置。 */
+           
+            /* justify-self/align-self 让网格子项的内容以列轴对齐（与之相反align-self是跟行轴对齐），这个值可以应用在单个网格子项的内容中。 / 让网格子项的内容以行轴对齐（与之相反justify-self是跟列轴对齐），这个值可以应用在单个网格子项的内容中。 */
+            justify-self: center;
+            align-self: center;
+        }
+
+        .wrapper3{
+            margin-top: 20px;
+            display: grid;
+            width: 300px;
+            height: 300px;
+            border: 1px solid #000;
+            justify-content: center;
+            align-content: center;
+        }
+        .demo3 {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+        <div class="wrapper1">
+            <!-- grid-template-columns 决定列数 后面跟几个值就是几列 -->
+            <!-- grid-template-rows 决定行数 后面跟几个值就是几行 -->
+            <div class="item1"></div>
+            <div></div>
+            <div class="item3"></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <div class="wrapper2">
+            <div>1</div>
+            <div class="div2">2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+        </div>
+
+
+        <div class="wrapper3">
+            <div class="demo3"></div>
+        </div>
+</body>
+</html>

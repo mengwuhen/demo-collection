@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>边框塌陷</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .father {
+            width: 300px;
+            margin-top: 200px;
+            background: aqua;
+            overflow: hidden;
+        }
+
+        .son {
+            width: 100px;
+            height: 100px;
+            margin-top: 20px;
+            float: left;
+            background-color: yellow;
+        }
+
+        /* 边框塌陷原因 对于有块级子元素的元素计算高度的方式,如果元素没有垂直边框和填充,那其高度就是其子元素顶部和底部边框边缘之间的距离 */
+        #big_box {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+
+        #small_box {
+            width: 100px;
+            height: 100px;
+            margin-top: 50px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div>
+        <div class="father">
+            <div class="son"></div>
+        </div>
+    </div> -->
+
+    <div id="big_box">
+        <div id="small_box"></div>
+    </div>
+</body>
+
+</html>

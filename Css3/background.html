@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>background</title>
+    <style>
+        .warper{
+            width: 600px;
+            height: 600px;
+            border: 1px solid #000;
+
+            padding: 80px;
+
+            background-color: rgba(0,0,0,0.2);
+            background-image: url('../assets/img/pittsburgh.jpg');
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: 50% 50%;
+            background-origin: content-box;
+            background-clip:padding-box;
+        }
+    </style>
+</head>
+<body>
+    <dl>
+        <dt>background 是一种 CSS 简写属性，用于一次性集中定义各种背景属性，包括 color, image, origin 与 size, repeat 方式等等。</dt>
+        <dd>background-color</dd>
+        <dd>background-position:xpos ypos 或者 x% y% 或者 left/right/center top/bottom/center </dd>
+        <dd>background-image:url('smiley.gif')</dd>
+        <dd>background-size:80px 60px;&emsp;&emsp; 指定背景图像的大小</dd>
+        <dd>background-repeat:repeat/no-repeat/repeat-x/repeat-y;&emsp;&emsp; 指定如何重复背景图像</dd>
+        <dd>background-origin:padding-box/border-box/content-box 背景图像填充框的相对位置/背景图像边界框的相对位置/背景图像的相对位置的内容框&emsp;&emsp; 指定背景图像的定位区域</dd>
+        <dd>background-clip:border-box/padding-box/content-box 背景绘制在边框方框内/背景绘制在衬距方框内/背景绘制在内容方框内 &emsp;&emsp;   指定背景图像的绘画区域</dd>
+        <dd>background-attachment:scroll/fixed/inherit 背景图片随页面的其余部分滚动/背景图像是固定的/从父元素继承&emsp;&emsp;  设置背景图像是否固定或者随着页面的其余部分滚动</dd>
+    </dl>
+
+    <div class="warper"></div>
+</body>
+</html>
