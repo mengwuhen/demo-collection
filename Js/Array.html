@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Array</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <!-- <dl>
+        <dt>数组方法总结</dt>
+        <dd>
+            <p>改变原数组的方法</p> 
+            <ul>
+                <li>pop</li>
+                <li>push</li>
+                <li>shift</li>
+                <li>unshift</li>
+                <li>reverse</li>
+                <li>splice</li>
+                <li>sort</li>
+                <li>fill</li>
+                <li>copyWithin</li>
+            </ul>
+        </dd>
+
+        <dd>
+            <p>不改变原数组的放大</p> 
+            <ul>
+                <li>concat</li>
+                <li>every</li>
+                <li>filter</li>
+                <li>forEach</li>
+                <li>indexOf</li>
+                <li>join</li>
+                <li>lastIndexOf</li>
+                <li>map</li>
+                <li>reduce</li>
+                <li>reduceRight</li>
+                <li>slice</li>
+                <li>find</li>
+                <li>keys</li>
+                <li>entries</li>
+                <li>includes</li>
+                <li></li>
+            </ul>
+        </dd>
+    </dl> -->
+
+    <script>
+        var arr = [1, 2, 3, 4, 5]
+        Array.prototype.$forEach = function (callback, thisArg) {
+            var T, k;
+            var O = new Object(this); 
+            var len = O.length >>> 0; 
+            if (typeof callback !== "function") {
+                throw new TypeError(callback + ' is not a function');
+            }
+            if (arguments.length > 1) {
+                T = thisArg;
+            }
+            k = 0;
+            while (k < len) {
+                var kValue;
+                if (k in O) {
+                    kValue = O[k];
+                    callback.call(T, kValue, k, O);
+                }
+                k++;
+            }
+        };
+        Array.prototype.$concat = function(){
+            debugger
+            var result = []
+            if(!Array.isArray(this)){
+                throw new TypeError(this +'is not a array')
+            }
+            var len = arguments.length
+            for(var i = 0 ; i<len; i++){
+                if(Array.isArray(arguments[i])){
+                    result.push(...arguments[i])
+                } else {
+                    result.push(arguments[i])
+                }
+            }
+            return result
+        }
+        Array.prototype.$reverse = function (){
+            let len = this.length
+            for(let i = 0 ; i< len / 2 ; i++){
+                var temp = this[i];   
+                this[i] = this[len - i - 1]; 
+                this[len-i-1] = temp;
+            }
+            return this
+        }
+        var a = [1,2,3,4,5,6,7,8,9]
+        Array.prototype.$join = function (str) {
+            var s =''
+            for (let index = 0; index < this.length; index++) {
+                s = s+this[index]+str
+            }
+            return s
+        }
+        Array.prototype.$splice = function () {
+            var result = []
+            var len = this.length
+            if(arguments.length == 0){
+                throw new TypeError('')
+            }
+            if(arguments.length == 1 && typeof (arguments[0] ) != 'number'){
+                throw new TypeError('')
+            }
+            if(arguments.length == 1) {
+                for(let i = arguments[0]; i<len; i++){
+                    result.push(this[i])
+                }
+                for(let i = arguments[0]; i<len; i++){
+                    this.pop(this[i])
+                }
+            }
+            if(arguments.length == 2) {
+                for(let i = arguments[0] ; i< arguments[0] + arguments[1]; i++){
+                    result.push(this[i])
+                }
+                let $arr=[]
+                for(let i = 0 ; i<arguments[0]; i++){
+                    $arr.push(this[i])
+                }
+                for(let i = arguments[0] + arguments[1] ; i<len; i++){
+                    $arr.push(this[i])
+                }
+                for(let i = 0 ; i < len ; i ++){
+                    this.pop()
+                }
+                for(let i = 0 ; i<$arr.length ; i++){
+                    this.push($arr[i])
+                }
+            }
+
+            if(arguments.length > 2) {
+                for(let i = arguments[0] ; i< arguments[0] + arguments[1]; i++){
+                    result.push(this[i])
+                }
+                let $arr=[]
+                for(let i = 0 ; i<arguments[0]; i++){
+                    $arr.push(this[i])
+                }
+                for(let i = 2 ; i<arguments.length; i++){
+                    $arr.push(arguments[i])
+                }
+                for(let i = arguments[0] + arguments[1] ; i<len; i++){
+                    $arr.push(this[i])
+                }
+                for(let i = 0 ; i < len ; i ++){
+                    this.pop()
+                }
+                for(let i = 0 ; i<$arr.length ; i++){
+                    this.push($arr[i])
+                }
+            }
+            return result
+        }
+        var s = ['a','s','d','f','g','h','j']
+        console.warn(s.$splice(2,4,'si','je'))
+        console.warn(s)
+    </script>
+</body>
+
+</html>
