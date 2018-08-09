@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Call、Apply、Bind</title>
+</head>
+
+<body>
+    <script>
+        //Call es5 实现
+        Function.prototype.call2 = function (context) {
+            context = context || window
+            context.fn = this
+            var arg = []
+            for (var i = 1, len = arguments.length; i < len; i++) {
+                arg.push('arguments[' + i + ']')
+            }
+            // 在执行 eval 函数式 会默认执行 arg.toString() 相当于 执行 arg.join(',')
+            var result = eval('context.fn(' + arg + ')')
+            delete context.fn
+            return result
+        }
+        //Call es6 实现
+        Function.prototype.$call = function (context, ...arg) {
+            context = context || window
+            context.fn = this
+            let result = context.fn(...arg)
+            delete context.fn
+            return result
+        }
+        //Apply es5 实现
+        Function.prototype.apply2 = function (context, arr) {
+            context = context || window
+            context.fn = this
+            var result
+            if (!arr) {
+                result = context.fn()
+            } else {
+                var arg = []
+                for (var i = 0, len = arr.length; i < len; i++) {
+                    arg.push('arr[' + i + ']')
+                }
+                result = eval('context.fn(' + arg + ')')
+            }
+            delete context.fn
+            return result
+        }
+        //Apply es6 实现
+        Function.prototype.$apply = function (context, arr) {
+            context = context || window
+            context.fn = this
+            let result = context.fn(...arr)
+            delete context.fn
+            return result
+        }
+        // Bind 实现
+        Function.prototype.bind2 = function (context) {
+
+            if (typeof this !== "function") {
+                throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
+            }
+
+            var self = this;
+            var args = Array.prototype.slice.call(arguments, 1);
+
+            var fNOP = function () {};
+
+            var fBound = function () {
+                var bindArgs = Array.prototype.slice.call(arguments);
+                return self.apply(this instanceof fNOP ? this : context, args.concat(bindArgs));
+            }
+
+            fNOP.prototype = this.prototype;
+            fBound.prototype = new fNOP();
+            return fBound;
+        }
+    </script>
+</body>
+
+</html>

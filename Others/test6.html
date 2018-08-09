@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>loading</title>
+    <style>
+        .loading{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+        .loading > span{
+            display: inline-block;
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: aquamarine;
+            animation: load 1s ease  infinite  ;
+        }
+        @-webkit-keyframes load{
+            0%{
+                opacity: 1;
+            }
+            100%{
+                opacity: 0.2;
+            }
+        }
+
+        .loading > span:nth-child(1){
+            left: 0;
+            top: 50%;
+            margin-top: -8px;
+            animation-delay: 0ms
+        }
+        .loading > span:nth-child(2){
+            left: 14px;
+            top: 14px;
+            animation-delay: 125ms;
+        }
+        .loading > span:nth-child(3){
+            left: 50%;
+            top: 0%;
+            margin-left: -8px;
+            animation-delay: 250ms;
+        }
+        .loading > span:nth-child(4){
+            right: 14px;
+            top: 14px;
+            animation-delay: 375ms;
+        }
+        .loading > span:nth-child(5){
+            right: 0;
+            top: 50%;
+            margin-top: -8px;
+            animation-delay: 500ms;
+        }
+        .loading > span:nth-child(6){
+            bottom: 14px;
+            right: 14px;
+            animation-delay: 625ms;
+        }
+        .loading > span:nth-child(7){
+           bottom: 0;
+           left: 50%;
+           margin-left: -8px;
+           animation-delay: 750ms;
+        }
+        .loading > span:nth-child(8){
+            left: 14px;
+            bottom: 14px;
+            animation-delay: 875ms;
+        }
+    </style>
+</head>
+<body>
+    <!-- transform translate 的性能要比 position 实现动画的性能好  页面的重绘 与回流（重排） 回流必定引起重绘  重绘不一定 引起回流 -->
+    <div class="loading">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</body>
+</html>
