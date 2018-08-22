@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>符号匹配</title>
+</head>
+<body>
+    <script>
+        function symbolMatch(str){
+            // 实际编码中，针对标签的匹配必须使用入栈判断，非常实用的数据结构用法
+            var arr = []
+            len = str.length
+            for(let i=0 ; i< len ; i++){
+                if(str[i] == '{' || str[i] == '[' || str[i] == '('){
+                    arr.push(str[i])
+                }
+
+                if(str[i] == ')'){
+                    if(arr[arr.length -1] !== '('){
+                        return false
+                    } else {
+                        arr.pop(arr[arr.length -1])
+                    }
+                }
+
+                if(str[i] == '}'){
+                    if(arr[arr.length -1] !== '{'){
+                        return false
+                    } else {
+                        arr.pop(arr[arr.length -1])
+                    }
+                }
+
+                if(str[i] == ']'){
+                    if(arr[arr.length -1] !== '['){
+                        return false
+                    } else {
+                        arr.pop(arr[arr.length -1])
+                    }
+                }
+            }
+            if(arr.length > 0) {
+                return false
+            }
+
+            return true
+        }
+
+        var str = '{}[]({{[()]}})'
+        console.warn(symbolMatch(str))
+    </script>
+</body>
+</html>

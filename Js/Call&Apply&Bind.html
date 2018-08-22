@@ -9,6 +9,15 @@
 </head>
 
 <body>
+    <dl>
+        <dt>Call、Apply、Bind 三者区别</dt>
+        <dd>apply：最多只能有两个参数——新this对象和一个数组 argArray。如果给该方法传递多个参数，则把参数都写进这个数组里面，当然，即使只有一个参数，也要写进数组里面。如果 argArray 不是一个有效的数组或者不是 arguments 对象，那么将导致一个 TypeError。如果没有提供 argArray 和 thisObj 任何一个参数，那么 Global 对象将被用作 thisObj，并且无法被传递任何参数。</dd>
+
+        <dd>call：则是直接的参数列表，主要用在js对象各方法互相调用的时候，使当前this实例指针保持一致,或在特殊情况下需要改变this指针。如果没有提供 thisObj 参数，那么 Global 对象被用作 thisObj。</dd>
+
+        <dd>bind会返回一个改变this指向的新函数 ，注意这里强调的是新函数，其与之前的使用的不是同一块内存地址，所以当你需要重复使用这个函数的时候，你就不得不把其保存到一个变量，方便下次调用。上面的两个函数都是返回的执行结果，即调用即执。另外需要注意的地方是，bind函数中的首个参数，会自动成为返回新函数中参数的默认值，那么正式调用的时候，只需要给出除首个参数外，剩余参数即可。</dd>
+    </dl>
+
     <script>
         //Call es5 实现
         Function.prototype.call2 = function (context) {

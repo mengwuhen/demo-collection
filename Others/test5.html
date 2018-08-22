@@ -6,79 +6,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Promise</title>
+    <style>
+        /* .test{
+            width: 500px;
+            height: 60px;
+            padding: 50px;
+            margin: 100px;
+            border: 1px solid #000;
+        } */
+
+        body,
+        p,
+        div,
+        h1,
+        h2,
+        h3,
+        h4,
+        image,
+        span,
+        ul,
+        li,
+        dl,
+        dd,
+        dt {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* .test{
+            float: left;
+            height: 100vh;
+            width: 200px;
+            background: aqua
+        }
+        .test2{
+            height: 100vh;
+            width: 100%;
+            background: bisque
+        }
+        .test3{
+            float: right;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 400px;
+            background: blueviolet
+        } */
+    </style>
 </head>
 
 <body>
+    <div class="test"></div>
+    <div class="test2"></div>
+    <div class="test3"></div>
 
     <script>
-        function Parent() {
-            this.a = 1;
-            this.b = [1, 2, this.a];
-            this.c = {
-                demo: 5
-            };
-            this.show = function () {
-                console.log(this.a, this.b, this.c.demo);
-            }
-        }
+        (function () {
+                // canvas 实现 watermark
+                function __canvasWM({
+                    // 使用 ES6 的函数默认值方式设置参数的默认取值
+                    // 具体参见 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Default_parameters
+                    container = document.body,
+                    width = '200px',
+                    height = '150px',
+                    textAlign = 'center',
+                    textBaseline = 'middle',
+                    font = "20px microsoft yahei",
+                    fillStyle = 'rgba(184, 184, 184, 0.8)',
+                    content = '请勿外传',
+                    rotate = '30',
+                    zIndex = 1000
+                } = {}) {
+                    var args = arguments[0];
+                    var canvas = document.createElement('canvas');
 
-        function Child() {
-            this.a = 2;
-            this.change = function () {
+                    canvas.setAttribute('width', width);
+                    canvas.setAttribute('height', height);
+                    var ctx = canvas.getContext("2d");
 
-                this.b.push(this.a);
-                this.a = this.b.length;
-                this.c.demo = this.a++;
-            }
-        }
-        Child.prototype = new Parent();
+                    ctx.textAlign = textAlign;
+                    ctx.textBaseline = textBaseline;
+                    ctx.font = font;
+                    ctx.fillStyle = fillStyle;
+                    ctx.rotate(Math.PI / 180 * rotate);
+                    ctx.fillText(content, parseFloat(width) / 2, parseFloat(height) / 2);
 
-        var parent = new Parent();
-        var child1 = new Child(); //
-        var child2 = new Child();
+                    var base64Url = canvas.toDataURL();
+                    const watermarkDiv = document.createElement("div");
+                    watermarkDiv.setAttribute('style',
+                        `
+                        position:absolute;
+                        top:0;
+                        left:0;
+                        width:100%;
+                        height:100%;
+                        z-index:${zIndex};
+                        pointer-events:none;
+                        background-repeat:repeat;
+                        background-image:url('${base64Url}')`
+                    );
 
-        child1.a = 11;
-        child2.a = 12;
-        
-        parent.show(); // 1 , [1,2,1] , 5
+                    container.style.position = 'relative';
+                    container.insertBefore(watermarkDiv, container.firstChild);
 
-        child1.show(); // 11 , [1,2,1] , 5
 
-        child2.show(); // 12 , [1,2,1] , 5
+                }
 
-        child1.change(); // 4 ,[1,2,1,11],4
-        child2.change(); //
+            window.__canvasWM = __canvasWM;
+        })();
 
-        parent.show(); // 1, [1,2,1,11,12], 5
-        child1.show(); // 11, [1,2,1,11,12], 5
-        child2.show(); // 12, [1,2,1,11,12],5
+        // 调用
+        __canvasWM({
+            content: 'QQMusicFE'
+        })
 
-        // Array.prototype.sort2= function(cb){
-        //     var temp;
-        //     debugger
-            
-		// 	var length = this.length;
-        //     if(length < 10) {
-        //         // 插入排序
-        //     } else {
-        //         // 快速排序
-        //     }
-
-        //     // 冒泡排序
-		// 	for(var i=0; i<length; i++) {
-		// 		for(var j=i+1; j<length; j++) {
-		// 			var result = cb(this[i],this[j]);
-		// 			if(result > 0 ) {
-		// 				temp = this[i];
-		// 				this[i] = this[j];
-		// 				this[j] = temp;
-		// 			}
-		// 		}
-		// 	}
-        // }
-        // var a = [1,5,6,7,8,23,4,0,3,5,6]
-        // a.sort2((a,b) => a-b)
-        // console.log(a)
+       
     </script>
 </body>
 
