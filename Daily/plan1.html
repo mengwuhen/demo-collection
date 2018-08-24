@@ -7,7 +7,10 @@
     <title>前端水印生成方案</title>
 </head>
 <body>
-    <div style="width:600px;height:800px;">
+    <div style="width:600px;height:800px;position:relative;" >
+      <div class="__wm" >
+
+      </div>
     </div>
 
     <div><img src="../assets/img/pittsburgh.jpg" alt=""></div>
@@ -72,6 +75,7 @@
             // 只在__wm元素变动才重新调用 __canvasWM
             if ((__wm && __wm.getAttribute('style') !== styleStr) || !__wm) {
               // 避免一直触发
+              //阻止 MutationObserver 实例继续接收的通知，直到再次调用其observe()方法，该观察者对象包含的回调函数都不会再被调用。
               mo.disconnect();
               mo = null;
             __canvasWM(JSON.parse(JSON.stringify(args)));
@@ -118,23 +122,26 @@
       } = {}) {
         const img = new Image();
         img.src = url;
+        // 解决canvas图片getImageData,toDataURL跨域问题  备注（首先，图片服务器需要配置Access-Control-Allow-Origin）
         img.crossOrigin = 'anonymous';
+
         img.onload = function() {
           const canvas = document.createElement('canvas');
           canvas.width = img.width;
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
 
-          ctx.drawImage(img, 0, 0);
+          ctx.drawImage(img, 0, 0); // 相当于占满整个canvas画布
           ctx.textAlign = textAlign;
           ctx.textBaseline = textBaseline;
           ctx.font = font;
           ctx.fillStyle = fillStyle;
-          ctx.fillText(content, img.width - textX, img.height - textY);
+          ctx.fillText(content, img.width - textX, img.height - textY); // 文本位置  以画布的左上角为原点
 
           const base64Url = canvas.toDataURL();
           cb && cb(base64Url);
         }
+        
       }
 
         if (typeof module != 'undefined' && module.exports) {  //CMD
@@ -151,7 +158,7 @@
 
     // 调用
     __picWM({
-        url: 'http://localhost:3000/assets/pittsburgh.jpg',
+        url: 'http://www.shijie.test.com/assets/img/pittsburgh.jpg',
         content: 'sj1994',
         cb: (base64Url) => {
           document.querySelector('img').src = base64Url

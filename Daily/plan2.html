@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>前端导出excel</title>
+    <!-- <script src="../package/xlsx.full.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+    <script src="https://cdn.bootcss.com/xlsx/0.11.3/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+    <button onclick="downloadExl()">导出</button>
+    <script>
+        // 依赖的 xlsx 库相当大（约 1M），即使在项目中除去重复依赖的部分、加上 js 传输压缩，仍然是一个需要权衡是否使用的问题。
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i !== s.length; ++i) {
+                view[i] = s.charCodeAt(i) & 0xFF;
+            };
+            return buf;
+        }
+        // 数据结构 一个二维数组，数组的长度代表 导出表格的行数，每一个元素的长度决定了其对应行的列数 
+        let data = [
+            ["列A", "列B"],
+            [3, 4],
+            ["列C", "列D"],
+            [5, 6],
+            [7,8]
+        ]
+        let downloadExl = function () {
+            let wopts = {
+                bookType: 'xlsx',
+                type: 'binary'
+            };
+            let fileName = "bill.xlsx";
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            const wbout = XLSX.write(wb, wopts);
+            saveAs(new Blob([s2ab(wbout)]), fileName); // 保存为文件
+        }
+
+    </script>
+</body>
+
+</html>
