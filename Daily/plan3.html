@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>前端导出pdf</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.bootcss.com/jspdf/1.4.0/jspdf.debug.js"></script>
+
+    <style>
+        .div1{
+            width: 100px;
+            height: 100px;
+            background-color: pink;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="btn-html2canvas">export PDF by using jspdf + html2canvas</button>
+
+    <div id="content">
+        <div  style=" width: 100px;
+        height: 100px;
+        background-color: pink;">
+            hellow world
+        </div>
+        <div  style=" width: 100px;
+        height: 100px;
+        background-color: pink;">
+            hellow world
+        </div>
+        <div  style=" width: 100px;
+        height: 100px;
+        background-color: pink;">
+            hellow world
+        </div>
+        <div  style=" width: 100px;
+        height: 100px;
+        background-color: pink;">
+            hellow world
+        </div>
+        <div  style=" width: 100px;
+        height: 100px;
+        background-color: pink;">
+            hellow world
+        </div>
+        <div  style=" width: 100px;
+        height: 100px;
+        background-color: pink;">
+            hellow world
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("btn-html2canvas").onclick = function () {
+            html2canvas(document.body, {
+              onrendered:function(canvas) {
+                  //返回图片dataURL，参数：图片格式和清晰度(0-1)
+                  var pageData = canvas.toDataURL('image/jpeg', 1.0);
+                  //方向默认竖直，尺寸ponits，格式a4[595.28,841.89]
+                  var pdf = new jsPDF('', 'pt', 'a4');
+                  //addImage后两个参数控制添加图片的尺寸，此处将页面高度按照a4纸宽高比列进行压缩
+                  pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height );
+                  pdf.save('stone.pdf');
+              }
+          })
+        }
+    </script>
+</body>
+
+</html>

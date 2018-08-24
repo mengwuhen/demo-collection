@@ -62,66 +62,30 @@
     <div class="test3"></div>
 
     <script>
-        (function () {
-                // canvas 实现 watermark
-                function __canvasWM({
-                    // 使用 ES6 的函数默认值方式设置参数的默认取值
-                    // 具体参见 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Default_parameters
-                    container = document.body,
-                    width = '200px',
-                    height = '150px',
-                    textAlign = 'center',
-                    textBaseline = 'middle',
-                    font = "20px microsoft yahei",
-                    fillStyle = 'rgba(184, 184, 184, 0.8)',
-                    content = '请勿外传',
-                    rotate = '30',
-                    zIndex = 1000
-                } = {}) {
-                    var args = arguments[0];
-                    var canvas = document.createElement('canvas');
-
-                    canvas.setAttribute('width', width);
-                    canvas.setAttribute('height', height);
-                    var ctx = canvas.getContext("2d");
-
-                    ctx.textAlign = textAlign;
-                    ctx.textBaseline = textBaseline;
-                    ctx.font = font;
-                    ctx.fillStyle = fillStyle;
-                    ctx.rotate(Math.PI / 180 * rotate);
-                    ctx.fillText(content, parseFloat(width) / 2, parseFloat(height) / 2);
-
-                    var base64Url = canvas.toDataURL();
-                    const watermarkDiv = document.createElement("div");
-                    watermarkDiv.setAttribute('style',
-                        `
-                        position:absolute;
-                        top:0;
-                        left:0;
-                        width:100%;
-                        height:100%;
-                        z-index:${zIndex};
-                        pointer-events:none;
-                        background-repeat:repeat;
-                        background-image:url('${base64Url}')`
-                    );
-
-                    container.style.position = 'relative';
-                    container.insertBefore(watermarkDiv, container.firstChild);
-
-
+        var addTwoNumbers = function (l1, l2) {
+            l1 = l1+''
+            l2 = l2 + ''
+            let len = l1.length > l2.length ? l1.length : l2.length
+            let $arr1 = (l1+'').split('').reverse()
+            let $arr2 = (l2+'').split('').reverse()
+            let flag = 0
+            let result = []
+            for(let i= 0; i<len ; i++){
+                $arr1[i] == undefined ? $arr1[i] = 0 : $arr1[i]
+                $arr2[i] == undefined ? $arr2[i] = 0 : $arr2[i]
+                if($arr1[i]/1 + $arr2[i]/1 >= 10){
+                    result.push((($arr1[i]/1 + $arr2[i]/1 + '').split('')[1]/1 + flag)/1)
+                    flag = 1
+                } else {
+                    result.push((($arr1[i]/1 + $arr2[i]/1) + flag)/1)
+                    flag = 0
                 }
+            }
+            
+            return result.reverse().join('')/1
+        }
 
-            window.__canvasWM = __canvasWM;
-        })();
-
-        // 调用
-        __canvasWM({
-            content: 'QQMusicFE'
-        })
-
-       
+        console.warn(addTwoNumbers(789,6789))
     </script>
 </body>
 
