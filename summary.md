@@ -50,7 +50,11 @@
  **相同节点类型**</br>
 当对比相同的节点类型比较简单，这里分为两种情况，</br>
 一种是DOM元素类型，对应html直接支持的元素类型：div，span和p；</br>
-还有一种是React组件。由于React此时并不知道如何去更新DOM树，因为这些逻辑都在React组件里面，所以它能做的就是根据新节点的props去更新原来根节点的组件实例，触发一个更新的过程
+还有一种是React组件。由于React此时并不知道如何去更新DOM树，因为这些逻辑都在React组件里面，所以它能做的就是根据新节点的props去更新原来根节点的组件实例，触发一个更新的过程.
 
+#### git reset --soft  git reset --mixed  git reset --hard 的区别
+* git reset --soft 会保留之前修改的文件  但是文件状态为 未提交（not commit）
+* git reset -- mixed 会保留之前修改的文件  但是文件状态 未add （not add）
+* git reset -- hard 不会保留之前所做的修改 
 
 
