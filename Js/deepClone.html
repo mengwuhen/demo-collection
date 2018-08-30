@@ -15,7 +15,7 @@
             var newObj = obj instanceof Array ? [] : {};
             for (var key in obj) {
                 if (obj.hasOwnProperty(key)) {
-                    newObj[key] = typeof obj[key] === 'object' ? deepCopy(obj[key]) : obj[key];
+                    newObj[key] = typeof obj[key] === 'object' || typeof obj[key] ==='function' ? deepCopy(obj[key]) : obj[key];
                 } 
             }
             return newObj;
