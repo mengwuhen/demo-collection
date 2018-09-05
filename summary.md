@@ -8,6 +8,11 @@
 * 页面渲染初始化；
 * 浏览器窗口尺寸改变——resize事件发生时；
 
+### 如何避免回流
+* 让要操作的元素进行”离线处理”，处理完后一起更新
+* 让元素脱离动画流，减少回流的Render Tree的规模
+
+
 ### CORS 跨域携带 Cookie 发送请求
   当在 a.com 进行访问时，如何向 b.com 携带 b.com 的 cookie 发送一个请求？
 * 在发送跨域请求时，需要后端设置一些请求头，否则浏览器不会允许客户端跨域发送请求。 Access-Control-Allow-Origin: a.com 这样调用过去会发现，b.com 会返回用户未登录。原因是 b.com 的 cookie 没有发送过去。
@@ -224,13 +229,134 @@ Person.prototype.sayName = function() {
 * post 不安全且不幂等 (创建子资源;使用服务端管理的（自动产生）的实例号创建资源) 
 * put 不安全但幂等 (用客户端管理的实例号创建一个资源;通过替换的方式更新资源;)
 * DELETE 不安全但幂等(删除资源;)
-
 ###### POST和PUT用于创建资源时有什么区别? 
 * POST和PUT在创建资源的区别在于，所创建的资源的名称(URI)是否由客户端决定。
 
+### 前端性能优化
+##### 静态资源优化
+> 主要包括html、css、js和图片文件，静态资源的加载时间 
+>> js、css文件压缩，图片压缩，gzip压缩：减少请求返回的数据量
+>> 合并css、js文件，制作雪碧图：减少http的请求次数，节省网络请求时间
+>> 静态资源cdn分发：客户端可以通过最佳的网络链路加载静态资源
+>> 
+##### 接口访问优化
+##### 页面渲染速度优化
+> 在JavaScript引用之前引用CSS标记,确保在使用JavaScript代码之前加载CSS 在引用JavaScript之前引用CSS可以实现更好地并行下载，从而加快浏览器的渲染速度。
+> CSS文件需要非阻塞引入，以防止DOM花费更多时间才能渲染完成。( CSS文件可以阻止页面加载并延迟页面呈现。使用preload实际上可以在浏览器开始显示页面内容之前加载CSS文件。)
+```css
+<link rel="preload" href="global.min.css" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="global.min.css"></noscript>
+```
+> 避免页面的回流
+> 减少使用第三方库，加载JavaScript异步操作
 
+### Javascript 常见继承
+```js
+function Animal (name) {
+  // 属性
+  this.name = name || 'Animal';
+  // 实例方法
+  this.sleep = function(){
+    console.log(this.name + '正在睡觉！');
+  }
+}
+// 原型方法
+Animal.prototype.eat = function(food) {
+  console.log(this.name + '正在吃：' + food);
+};
+```
+##### 原型链继承
+> 特点：子类的原型 是 父类 的实例。
+ >> 缺点：继承单一；多个子类继承的父类引用类型相同，一个实例修改了原型属性，那么也会影响其他的实例；无法向父类传参；
+ >> 优点：非常纯粹的继承关系，实例是子类的实例，也是父类的实例；父类新增原型方法/原型属性，子类都能访问到
+ ```js
+function Cat(){ 
+}
+Cat.prototype = new Animal();
+Cat.prototype.name = 'cat';
 
+//　Test Code
+var cat = new Cat();
+console.log(cat.name);
+cat.eat('fish');
+cat.sleep();
+console.log(cat instanceof Animal); //true 
+console.log(cat instanceof Cat); //true
+ ```
+##### 构造函数继承
+> 特点：使用.call()和.apply()将父类构造函数引入子类函数，使用父类的构造函数来增强子类实例
+>> 缺点：只能继承父类的实例属性和方法，不能继承原型属性/方法；实例并不是父类的实例，只是子类的实例；无法实现函数复用；
+>> 优点：可以实现多继承；创建子类实例时，可以向父类传递参数；
 
+```js
+function Cat(name){
+  Animal.call(this);
+  this.name = name || 'Tom';
+}
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // false
+console.log(cat instanceof Cat); // true
+```
+##### 实例继承
+> 为父类实例添加新特性，作为子类实例返回
+>> 缺点：实例是父类的实例，不是子类的实例；不支持多继承；
+>> 优点：不限制调用方式，不管是new 子类()还是子类(),返回的对象具有相同的效果
+
+```js
+function Cat(name){
+  var instance = new Animal();
+  instance.name = name || 'Tom';
+  return instance;
+}
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // true
+console.log(cat instanceof Cat); // false
+```
+#### 组合继承
+> 通过调用父类构造，继承父类的属性并保留传参的优点，然后通过将父类实例作为子类原型，实现函数复用
+>> 缺点：调用了两次父类构造函数，生成了两份实例
+>> 优点：既是子类的实例，也是父类的实例；可传参可复用；既可以继承父类原型方法，也可以继承父类实例；
+
+```js
+function Cat(name){
+  Animal.call(this);
+  this.name = name || 'Tom';
+}
+Cat.prototype = new Animal();
+// 组合继承也是需要修复构造函数指向的。
+Cat.prototype.constructor = Cat;
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // true
+console.log(cat instanceof Cat); // true
+```
+##### 寄生组合继承
+>通过寄生方式，砍掉父类的实例属性，这样，在调用两次父类的构造的时候，就不会初始化两次实例方法/属性，避免的组合继承的缺点
+```js
+function Cat(name){
+  Animal.call(this);
+  this.name = name || 'Tom';
+}
+(function(){
+  // 创建一个没有实例方法的类
+  var Super = function(){};
+  Super.prototype = Animal.prototype;
+  //将实例作为子类的原型
+  Cat.prototype = new Super();
+})();
+
+// Test Code
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // true
+console.log(cat instanceof Cat); //true
+```
 
 
 
