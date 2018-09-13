@@ -8,6 +8,11 @@
 * 页面渲染初始化；
 * 浏览器窗口尺寸改变——resize事件发生时；
 
+### 如何避免回流
+* 让要操作的元素进行”离线处理”，处理完后一起更新
+* 让元素脱离动画流，减少回流的Render Tree的规模
+
+
 ### CORS 跨域携带 Cookie 发送请求
   当在 a.com 进行访问时，如何向 b.com 携带 b.com 的 cookie 发送一个请求？
 * 在发送跨域请求时，需要后端设置一些请求头，否则浏览器不会允许客户端跨域发送请求。 Access-Control-Allow-Origin: a.com 这样调用过去会发现，b.com 会返回用户未登录。原因是 b.com 的 cookie 没有发送过去。
@@ -224,13 +229,168 @@ Person.prototype.sayName = function() {
 * post 不安全且不幂等 (创建子资源;使用服务端管理的（自动产生）的实例号创建资源) 
 * put 不安全但幂等 (用客户端管理的实例号创建一个资源;通过替换的方式更新资源;)
 * DELETE 不安全但幂等(删除资源;)
-
 ###### POST和PUT用于创建资源时有什么区别? 
 * POST和PUT在创建资源的区别在于，所创建的资源的名称(URI)是否由客户端决定。
 
+### 前端性能优化
+##### 静态资源优化
+> 主要包括html、css、js和图片文件，静态资源的加载时间 
+>> js、css文件压缩，图片压缩，gzip压缩：减少请求返回的数据量
+>> 合并css、js文件，制作雪碧图：减少http的请求次数，节省网络请求时间
+>> 静态资源cdn分发：客户端可以通过最佳的网络链路加载静态资源
+>> 
+##### 接口访问优化
+##### 页面渲染速度优化
+> 在JavaScript引用之前引用CSS标记,确保在使用JavaScript代码之前加载CSS 在引用JavaScript之前引用CSS可以实现更好地并行下载，从而加快浏览器的渲染速度。
+> CSS文件需要非阻塞引入，以防止DOM花费更多时间才能渲染完成。( CSS文件可以阻止页面加载并延迟页面呈现。使用preload实际上可以在浏览器开始显示页面内容之前加载CSS文件。)
+```css
+<link rel="preload" href="global.min.css" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="global.min.css"></noscript>
+```
+> 避免页面的回流
+> 减少使用第三方库，加载JavaScript异步操作
+
+### Javascript 常见继承
+```js
+function Animal (name) {
+  // 属性
+  this.name = name || 'Animal';
+  // 实例方法
+  this.sleep = function(){
+    console.log(this.name + '正在睡觉！');
+  }
+}
+// 原型方法
+Animal.prototype.eat = function(food) {
+  console.log(this.name + '正在吃：' + food);
+};
+```
+##### 原型链继承
+> 特点：子类的原型 是 父类 的实例。
+ >> 缺点：继承单一；多个子类继承的父类引用类型相同，一个实例修改了原型属性，那么也会影响其他的实例；无法向父类传参；
+ >> 优点：非常纯粹的继承关系，实例是子类的实例，也是父类的实例；父类新增原型方法/原型属性，子类都能访问到
+ ```js
+function Cat(){ 
+}
+Cat.prototype = new Animal();
+Cat.prototype.name = 'cat';
+
+//　Test Code
+var cat = new Cat();
+console.log(cat.name);
+cat.eat('fish');
+cat.sleep();
+console.log(cat instanceof Animal); //true 
+console.log(cat instanceof Cat); //true
+ ```
+##### 构造函数继承
+> 特点：使用.call()和.apply()将父类构造函数引入子类函数，使用父类的构造函数来增强子类实例
+>> 缺点：只能继承父类的实例属性和方法，不能继承原型属性/方法；实例并不是父类的实例，只是子类的实例；无法实现函数复用；
+>> 优点：可以实现多继承；创建子类实例时，可以向父类传递参数；
+
+```js
+function Cat(name){
+  Animal.call(this);
+  this.name = name || 'Tom';
+}
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // false
+console.log(cat instanceof Cat); // true
+```
+##### 实例继承
+> 为父类实例添加新特性，作为子类实例返回
+>> 缺点：实例是父类的实例，不是子类的实例；不支持多继承；
+>> 优点：不限制调用方式，不管是new 子类()还是子类(),返回的对象具有相同的效果
+
+```js
+function Cat(name){
+  var instance = new Animal();
+  instance.name = name || 'Tom';
+  return instance;
+}
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // true
+console.log(cat instanceof Cat); // false
+```
+#### 组合继承
+> 通过调用父类构造，继承父类的属性并保留传参的优点，然后通过将父类实例作为子类原型，实现函数复用
+>> 缺点：调用了两次父类构造函数，生成了两份实例
+>> 优点：既是子类的实例，也是父类的实例；可传参可复用；既可以继承父类原型方法，也可以继承父类实例；
+
+```js
+function Cat(name){
+  Animal.call(this);
+  this.name = name || 'Tom';
+}
+Cat.prototype = new Animal();
+// 组合继承也是需要修复构造函数指向的。
+Cat.prototype.constructor = Cat;
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // true
+console.log(cat instanceof Cat); // true
+```
+##### 寄生组合继承
+>通过寄生方式，砍掉父类的实例属性，这样，在调用两次父类的构造的时候，就不会初始化两次实例方法/属性，避免的组合继承的缺点
+```js
+function Cat(name){
+  Animal.call(this);
+  this.name = name || 'Tom';
+}
+(function(){
+  // 创建一个没有实例方法的类
+  var Super = function(){};
+  Super.prototype = Animal.prototype;
+  //将实例作为子类的原型
+  Cat.prototype = new Super();
+})();
+
+// Test Code
+var cat = new Cat();
+console.log(cat.name);
+console.log(cat.sleep());
+console.log(cat instanceof Animal); // true
+console.log(cat instanceof Cat); //true
+```
+
+### 箭头函数的this指向
+* 写法问题：箭头函数只能使用 **赋值式** 写法，不能使用 声明式 写法
+* 箭头函数 没有 arguments 参数和 super
+
+> 箭头函数没有自己的this，因此不能使用 call,apply 改变this的指向; 箭头函数不能用于构造函数；
+> 箭头函数总是指向定义时的 this  
+```js
+var x=11;
+var obj={
+  x:22,
+  say:function(){
+    console.log(this.x)
+  }
+}
+obj.say(); // 22
+
+var x=11;
+var obj={
+  x:22,
+  say:() => console.log(this.x)
+}
+obj.say(); // 11
+```
 
 
+### instanceof 注意事项
+* 使用instanceof 判断一个变量是否是数组 arr instanceof Array 如果是true 则说明是数组；反之 则不是数组； instanceof Object 为true，不能说明 变量为对象，也可能是数组；
+* arr instanceof  Array 相当于 Array.prototype.isPrototypeOf(arr) 如果是true 则说明是数组；反之 则不是数组；
+* 从原型链的角度根据 instanceof 判断一个变量是否是一个数组 相当于 arr._proto_ === Array.prototype 相当于 arr.constructor === Array 为true 是数组，反之，则不是数组
 
-
+### fetch 和 Ajax  axios的区别
+* fetch 是window对象的一个方法，其第一个参数是url，第二个参数是init对象，用来初始化，返回的是一个promise对象； Ajax 是对于XMLHttpRequest的一层封装；
+* fetch 跨域的时候默认不会带cookie，因此需要手动的指定 credentials:'include'，即默认情况下fetch 不会接受和发送cookie；fetch()返回的promise将不会拒绝http的错误状态，即使响应是一个HTTP 404或者500 ；所有的IE浏览器都不会支持 fetch()方法
+* axios 是promise版的 Ajax，他默认自动转换JSON数据，可以拦截转换请求和响应，并且客户端支持防止CSRF/XSRF
 
 
