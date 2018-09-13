@@ -358,5 +358,39 @@ console.log(cat instanceof Animal); // true
 console.log(cat instanceof Cat); //true
 ```
 
+### 箭头函数的this指向
+* 写法问题：箭头函数只能使用 **赋值式** 写法，不能使用 声明式 写法
+* 箭头函数 没有 arguments 参数和 super
+
+> 箭头函数没有自己的this，因此不能使用 call,apply 改变this的指向; 箭头函数不能用于构造函数；
+> 箭头函数总是指向定义时的 this  
+```js
+var x=11;
+var obj={
+  x:22,
+  say:function(){
+    console.log(this.x)
+  }
+}
+obj.say(); // 22
+
+var x=11;
+var obj={
+  x:22,
+  say:() => console.log(this.x)
+}
+obj.say(); // 11
+```
+
+
+### instanceof 注意事项
+* 使用instanceof 判断一个变量是否是数组 arr instanceof Array 如果是true 则说明是数组；反之 则不是数组； instanceof Object 为true，不能说明 变量为对象，也可能是数组；
+* arr instanceof  Array 相当于 Array.prototype.isPrototypeOf(arr) 如果是true 则说明是数组；反之 则不是数组；
+* 从原型链的角度根据 instanceof 判断一个变量是否是一个数组 相当于 arr._proto_ === Array.prototype 相当于 arr.constructor === Array 为true 是数组，反之，则不是数组
+
+### fetch 和 Ajax  axios的区别
+* fetch 是window对象的一个方法，其第一个参数是url，第二个参数是init对象，用来初始化，返回的是一个promise对象； Ajax 是对于XMLHttpRequest的一层封装；
+* fetch 跨域的时候默认不会带cookie，因此需要手动的指定 credentials:'include'，即默认情况下fetch 不会接受和发送cookie；fetch()返回的promise将不会拒绝http的错误状态，即使响应是一个HTTP 404或者500 ；所有的IE浏览器都不会支持 fetch()方法
+* axios 是promise版的 Ajax，他默认自动转换JSON数据，可以拦截转换请求和响应，并且客户端支持防止CSRF/XSRF
 
 
