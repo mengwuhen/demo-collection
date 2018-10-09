@@ -394,3 +394,93 @@ obj.say(); // 11
 * axios 是promise版的 Ajax，他默认自动转换JSON数据，可以拦截转换请求和响应，并且客户端支持防止CSRF/XSRF
 
 
+### 在Dva 结合 antd 的项目中使用 antd 的组件 Anchor 组件时由于使用的是 hashHistory 导致设置锚点时 会导致路由匹配错误
+
+> 解决方案
+>> 通过使用window.scrollTo 来解决。首先在相关的位置 设置id, 给锚点导航列表设置 相应的点击事件。通过点击事件获取点击的Dom节点的**offsetTop**值，接着将获取的offsetTop值 传给 window.scrollTo方法。这样是页面滚动到相应的位置。
+> 如何实现页面滚动 到相应位置时自动选中锚点导航列表的DOM 元素
+>> 在组件的componentDidMount 声明周期内 调用 window.addEventListener('scroll',this.props.onScroll) 函数 ,在onScroll 函数内通过获取相应的DOM
+节点的offsetTop 值，通过比较 offsetTop 和 window.scrollY + 200 的值的大小，修改相应锚点列表节点的样式。 
+
+* 上边的解决方案 当启动本地项目时可以生效，但是当你部署到生产环境是你会发现 当触发点击事件时，执行到 window.scrollTo()时，在生产环境这行代码不会执行，
+ > 解决方案
+ > 使用Element.scrollIntoView()
+ ```js
+    const scrollToAnchor = (anchorName) => {
+      if (anchorName) {
+          // 找到锚点
+          let anchorElement = document.getElementById(anchorName);
+          // 如果对应id的锚点存在，就跳转到锚点
+          if(anchorElement) {
+              anchorElement.scrollIntoView();
+              // 如果页面有固定header，处理顶部header遮挡title的问题
+              const scrolledY = window.scrollY;
+              if(scrolledY){
+                  window.scroll(0, scrolledY - 100);   // 100为header高度
+              }
+          }
+      }
+   };
+ ```
+
+ * 同样 当在生产环境时，当触发 scroll 事件时，会发现当获取 window.scrollY 时，获取到的值始终是0 当我们本地编译时，打印的window.scrollY 是可以获取到的，
+ 但是当我们 打包部署到线上环境时，会发现打印的始终未0
+
+ > 解决办法
+ > 使用 document.body.scrollTop
+
+ * 此时有必要区分一下 获取页面卷曲高度的  相关概念
+ >网页可见区域宽： document.body.clientWidth;
+>网页可见区域高： document.body.clientHeight;
+>网页可见区域宽： document.body.offsetWidth    (包括边线的宽);
+>网页可见区域高： document.body.offsetHeight   (包括边线的宽);
+>网页正文全文宽： document.body.scrollWidth;
+>网页正文全文高： document.body.scrollHeight;
+>网页被卷去的高： document.body.scrollTop;
+>网页被卷去的左： document.body.scrollLeft;
+>网页正文部分上： window.screenTop;
+>网页正文部分左： window.screenLeft;
+>屏幕分辨率的高： window.screen.height;
+>屏幕分辨率的宽： window.screen.width;
+>屏幕可用工作区高度： window.screen.availHeight;
+>屏幕可用工作区宽度：window.screen.availWidth;
+>scrollHeight: 获取对象的滚动高度。  
+>scrollLeft:设置或获取位于对象左边界和窗口中目前可见内容的最左端之间的距离
+>scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离
+>scrollWidth:获取对象的滚动宽度
+>offsetHeight:获取对象相对于版面或由父坐标 offsetParent 属性指定的父坐标的高度
+>offsetLeft:获取对象相对于版面或由 offsetParent 属性指定的父坐标的计算左侧位置
+>offsetTop:获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置  
+>event.clientX 相对文档的水平座标
+>event.clientY 相对文档的垂直座标
+>event.offsetX 相对容器的水平坐标
+>event.offsetY 相对容器的垂直坐标  
+>document.documentElement.scrollTop 垂直方向滚动的值
+>event.clientX+document.documentElement.scrollTop 相对文档的水平座标+垂直方向滚动的量
+>---------------------
+>本文来自 德魁 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/DekuiCaiNiao/article/details/79041685?utm_source=copy 
+
+* 最后谈一下我们的优化 因为页面监听 scroll 事件 会消耗很多的资源，因此可以考虑 将scroll的 回调事件 设置为 防抖函数
+> 解决方法 
+>> 使用loadsh的 debounce函数 将回调函数 优化 
+```js
+  componentWillMount(){
+      let _this = this;
+      const domain = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).domain
+      domain =='Wb' ? window.addEventListener('scroll', this.props.onScroll,true) :''
+  }
+```
+
+* 问题二 当我们的页面刷新时 会造成页面保持刷新前的状态，即页面始终保持在之前滚动的位置。 当需求是页面刷新时 我们希望滚动条回到顶端.需要注意的是 ** 如果同一个监听事件分别为“事件捕获”和“事件冒泡”注册了一次，一共两次，这两次事件需要分别移除。两者不会互相干扰。 即 addEventListener 和 removeEventListener 的 第三个参数要相等 **
+> 解决方法
+>> 在组建的卸载生命周期函数内 清空监听的scroll事件
+
+```js
+  componentWillUnmount(){
+      const domain = qs.parse(this.props.location.search, {ignoreQueryPrefix: true}).domain
+      domain =='Wb' ? window.removeEventListener('scroll',this.propsonScroll,true) :''
+  }
+```
+
+### jsx 对于部分css3 属性不支持的解决方法
+> 比如 boxShow 不支持，可以通过原生js方法获取dom节点，通过修改 style 属性来支持（没有什么是原生js解决不了的）
