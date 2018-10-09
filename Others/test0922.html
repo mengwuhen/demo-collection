@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class Animal {
+            constructor(name, number){
+                this.name = name || 0
+                this.number = number || 'animal'
+                this.say = this.sayName.bind(this)
+            }
+
+            sayName(){
+                console.warn('my name is'+ this.name)
+            }
+
+            sayHello(){
+                console.warn('ni hao')
+            }
+        }    
+
+        class Dog extends Animal {
+
+            bark(){
+                console.log('wang wang')
+            }
+        }
+
+        let animal = new Animal()
+        console.warn(animal)
+
+        let dog = new Dog('狗',100)
+        console.warn(dog)
+        dog.sayName()
+    </script>
+</body>
+</html>

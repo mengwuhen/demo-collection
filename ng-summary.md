@@ -146,6 +146,22 @@ compile: function(tElement, tAttrs, transclude) {
 ```
 
 ### scope 的理解
-* scope 是一个存储应用的数据模型；为表达式提供了一个执行上下文；可以监听表达式的变化和传播事件；**一般**情况下，作用于的层级结构对应DOM 树的层级结构；
+* scope 是一个存储应用的数据模型；为表达式提供了一个执行上下文；可以监听表达式的变化和传播事件；**一般**情况下，作用域的层级结构对应DOM 树的层级结构；
 * 一般情况下 一个路由对应一个 controller 和 一个 templateUrl 。一个controller 具有唯一的一个scope。
 * scope 作为 controller 和 视图的桥梁
+### ng-show 导致的页面闪动
+* ng-show 与 ng-if 的区别
+> ng-show 相当于 visibility： hidden； ng-if 相当于 display: none;
+* 原因
+> 由于页面初始化，先处理html显示，然后是angular js的处理后的显示，所以js运行前，所有ng-show控制不显示的内容，在页面初始化中先显示，js运行后才隐藏。
+* 解决办法
+> 1：在用到ng-show的元素里添加ng-hide class。
+> 2：用ng-cloak来处理。
+
+### angularJs 和 React 的区别
+* 不同点
+> angular 作为mvc的框架，react作为mvvm的框架，在执行效率上，react的效率要高于前者，主要是react 采用了 vm（visutual Dom）算法。
+> angular 的概念偏多。包含有 指令、服务、controller、路由、modal 等概念，虽然相对复杂，但是节省了不少的代码。而react 采用了jsx 语法，提出一切皆组件的思想，在代码复用以 及组件化 方面对人更友好一些。
+> angular 作为mvc的框架，在 **表现与行为** 分离上执行的更彻底一些。react 采用jsx 将html 和 js 融合在一起，对于新手不够友好。
+* 相同点
+> angularJs 虽然没有组件的概念，但是在 自定义指令 中 和react 的组件化 思想大同小异。
