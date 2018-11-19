@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Promise</title>
+</head>
+
+<body>
+    <script>
+        // let promise = new Promise((resolve, reject) => {
+        //     console.log(1);
+        //     resolve();
+        //     console.log(2);
+        // })
+
+        // promise.then(() => {
+        //     console.log(3);
+        // })
+
+        // console.log(4); // 
+
+        // let promise = new Promise((resolve, reject) => {
+        //     resolve('success1');
+        //     reject('error');
+        //     resolve('success2');
+        // });
+
+        // promise.then((res) => {
+        //     console.log('then:', res);
+        // }).catch((err) => {
+        //     console.log('catch:', err);
+        // })
+
+        // function red() {
+        //     console.log('red');
+        // }
+
+        // function green() {
+        //     console.log('green');
+        // }
+
+        // function yellow() {
+        //     console.log('yellow');
+        // }
+
+        // var light = function (timmer, cb) {
+        //     return new Promise(function (resolve, reject) {
+        //         setTimeout(function () {
+        //             cb();
+        //             resolve();
+        //         }, timmer);
+        //     });
+        // };
+
+        // var step = function () {
+        //     Promise.resolve().then(function () {
+        //         return light(3000, red);
+        //     }).then(function () {
+        //         return light(2000, green);
+        //     }).then(function () {
+        //         return light(1000, yellow);
+        //     }).then(function () {
+        //         step();
+        //     });
+        // }
+
+        // step();
+
+        // const timeout = ms => new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve();
+        //     }, ms);
+        // });
+
+        // const ajax1 = () => timeout(2000).then(() => {
+        //     console.log('1');
+        //     return 1;
+        // });
+
+        // const ajax2 = () => timeout(1000).then(() => {
+        //     console.log('2');
+        //     return 2;
+        // });
+
+        // const ajax3 = () => timeout(2000).then(() => {
+        //     console.log('3');
+        //     return 3;
+        // });
+
+        // const mergePromise = ajaxArray => {
+        //     var data = [];
+
+        //     // Promise.resolve方法调用时不带参数，直接返回一个resolved状态的 Promise 对象。
+        //     var sequence = Promise.resolve();
+
+        //     ajaxArray.forEach(function (item) {
+        //         // 第一次的 then 方法用来执行数组中的每个函数，
+        //         // 第二次的 then 方法接受数组中的函数执行后返回的结果，
+        //         // 并把结果添加到 data 中，然后把 data 返回。
+        //         sequence = sequence.then(item).then(function (res) {
+        //             data.push(res);
+        //             return data;
+        //         });
+        //     })
+
+        //     // 遍历结束后，返回一个 Promise，也就是 sequence， 他的 [[PromiseValue]] 值就是 data，
+        //     // 而 data（保存数组中的函数执行后的结果） 也会作为参数，传入下次调用的 then 方法中。
+        //     return sequence;
+        // };
+
+        // mergePromise([ajax1, ajax2, ajax3]).then(data => {
+        //     console.log('done');
+        //     console.log(data); // data 为 [1, 2, 3]
+        // });
+
+        // 要求分别输出
+        // 1
+        // 2
+        // 3
+        // done
+        // [1, 2, 3]
+
+
+        const first = () => (new Promise((resolve, reject) => {
+            console.log(3);
+            let p = new Promise((resolve, reject) => {
+                console.log(7);
+                setTimeout(() => {
+                    console.log(5);
+                    resolve(6);
+                }, 0)
+                resolve(1);
+            });
+            resolve(2);
+            p.then((arg) => {
+                console.log(arg);
+            });
+
+        }));
+
+        first().then((arg) => {
+            console.log(arg);
+        });
+        console.log(4);
+
+        //         有 8 个图片资源的 url，已经存储在数组 urls 中（即urls = ['http://example.com/1.jpg', ...., 'http://example.com/8.jpg']），而且已经有一个函数 function loadImg，输入一个 url 链接，返回一个 Promise，该 Promise 在图片下载完成的时候 resolve，下载失败则 reject。
+        // 但是我们要求，任意时刻，同时下载的链接数量不可以超过 3 个。
+        // 请写一段代码实现这个需求，要求尽可能快速地将所有图片下载完成。
+        var urls = ['https://www.kkkk1000.com/images/getImgData/getImgDatadata.jpg',
+            'https://www.kkkk1000.com/images/getImgData/gray.gif',
+            'https://www.kkkk1000.com/images/getImgData/Particle.gif',
+            'https://www.kkkk1000.com/images/getImgData/arithmetic.png',
+            'https://www.kkkk1000.com/images/getImgData/arithmetic2.gif',
+            'https://www.kkkk1000.com/images/getImgData/getImgDataError.jpg',
+            'https://www.kkkk1000.com/images/getImgData/arithmetic.gif',
+            'https://www.kkkk1000.com/images/wxQrCode2.png'
+        ];
+
+        function loadImg(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image()
+                img.onload = function () {
+                    console.log('一张图片加载完成');
+                    resolve();
+                }
+                img.onerror = reject
+                img.src = url
+            })
+        };
+
+        function limitLoad(urls, handler, limit) {
+            // 对数组做一个拷贝
+            const sequence = [].concat(urls)
+            let promises = [];
+
+            //并发请求到最大数
+            promises = sequence.splice(0, limit).map((url, index) => {
+                // 这里返回的 index 是任务在 promises 的脚标，用于在 Promise.race 之后找到完成的任务脚标
+                return handler(url).then(() => {
+                    return index
+                });
+            });
+
+            // 利用数组的 reduce 方法来以队列的形式执行
+            return sequence.reduce((last, url, currentIndex) => {
+                return last.then(() => {
+                    // 返回最快改变状态的 Promise
+                    return Promise.race(promises)
+                }).catch(err => {
+                    // 这里的 catch 不仅用来捕获 前面 then 方法抛出的错误
+                    // 更重要的是防止中断整个链式调用
+                    console.error(err)
+                }).then((res) => {
+                    // 用新的 Promise 替换掉最快改变状态的 Promise
+                    promises[res] = handler(sequence[currentIndex]).then(() => {
+                        return res
+                    });
+                })
+            }, Promise.resolve()).then(() => {
+                return Promise.all(promises)
+            })
+
+        }
+        limitLoad(urls, loadImg, 3)
+
+        /*
+        因为 limitLoad 函数也返回一个 Promise，所以当 所有图片加载完成后，可以继续链式调用
+
+        limitLoad(urls, loadImg, 3).then(() => {
+            console.log('所有图片加载完成');
+        }).catch(err => {
+            console.error(err);
+        })
+        */
+    </script>
+</body>
+
+</html>

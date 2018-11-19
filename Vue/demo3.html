@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 组件的注册</title>
+    <script src='../package/vue.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id="app">
+        <component-a title1="shijie"></component-a>
+        <component-b title2="shijie2"></component-b>
+    </div>
+
+    <script>
+
+        // 通过 Vue.component 创建的组件，在注册之后可以用在任何新创建的 Vue 根实例 (new Vue) 的模板中。
+
+        // 组件的命名 采用 短横线 命名的方式
+
+        
+
+
+        //注意局部注册的组件在其子组件中不可用。
+        var ComponentA = {
+            props: ['title1'],
+            template: '<h1>{{ title1 }}</h1> '
+        }
+        // 如果你希望 ComponentA 在 ComponentB 中可用，
+        var ComponentB = {
+            props: ['title2'],
+            components: {
+                'component-a': ComponentA
+            },
+            template: ' <div> <h3>{{ title2 }}</h3> <component-a :title1="title2"></component-a> </div>',
+        }
+
+        var ComponentC = {
+            props: ['title3'],
+            template: '<h3>{{ title3 }}</h3>'
+        }
+
+        var vm = new Vue({
+            el: '#app',
+            components: {
+                'component-a': ComponentA,
+                'component-b': ComponentB
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -53,3 +53,12 @@ window.px2rem = function(v) {
 window.dpr = dpr;
 window.rem = rem;
 ```
+
+
+### 移动端适配1px的问题
+
+
+### 介绍flex布局
+
+
+### 

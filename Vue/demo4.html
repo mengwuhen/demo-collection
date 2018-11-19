@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 组件深入 Props</title>
+    <script src='../package/vue.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <base-input v-model="value" v-bind:label='label' class="username-input" placeholder="Enter your username"></base-input>
+
+        <base-checkbox v-model="lovingVue" v-on:change="change"></base-checkbox>
+
+        <base-input2 v-model="value" v-bind:label='label' class="username-input" placeholder="Enter your username"></base-input2>
+    </div>
+
+    <script>
+        // Props 的大小写  在js 中采用 驼峰命名法  在 html 中采用  短横线 命名法
+
+        Vue.component('base-input', {
+            inheritAttrs: false,
+            props: ['label', 'value'],
+            template: `
+            <label>
+                {{ label }}
+                <input
+                v-bind="$attrs"
+                v-bind:value="value"
+                v-on:input="$emit('input', $event.target.value)"
+                >
+            </label>
+            `
+        })
+
+        Vue.component('base-checkbox', {
+            model: {
+                prop: 'checked',
+                event: 'change'
+            },
+            props: {
+                checked: Boolean
+            },
+            template: `
+                <input
+                type="checkbox"
+                v-bind:checked="checked"
+                v-on:change="$emit('change', $event.target.checked)"
+                >
+            `
+        })
+
+        Vue.component('base-input2', {
+            inheritAttrs: false,
+            props: ['label', 'value'],
+            computed: {
+                inputListeners: function () {
+                    var vm = this
+                    // `Object.assign` 将所有的对象合并为一个新对象
+                    return Object.assign({},
+                        // 我们从父级添加所有的监听器
+                        this.$listeners,
+                        // 然后我们添加自定义监听器，
+                        // 或覆写一些监听器的行为
+                        {
+                            // 这里确保组件配合 `v-model` 的工作
+                            input: function (event) {
+                                console.warn(event.target.value)
+                                vm.$emit('input', event.target.value)
+                            }
+                        }
+                    )
+                }
+            },
+            template: `
+                <label>
+                {{ label }}
+                <input
+                    v-bind="$attrs"
+                    v-bind:value="value"
+                    v-on="inputListeners"
+                >
+                </label>
+            `
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                label: 'ceshi',
+                value: 123,
+                lovingVue: true
+            },
+            methods: {
+                onInput: function (value) {
+                    console.warn(value)
+                    console.warn(this)
+                },
+                change: function () {
+                    console.warn(this)
+                }
+            },
+            components: {
+
+            },
+            watch: {
+
+            }
+        })
+    </script>
+
+</body>
+
+</html>

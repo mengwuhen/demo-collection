@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo1</title>
+    <script src="https://d3js.org/d3.v5.js"></script>
+</head>
+
+<body>
+    <p>Hello World 1</p>
+    <p>Hello World 2</p>
+
+    <div id="myid">shijie1</div>
+    <div>shijie2</div>
+    <svg>
+        <rect></rect>
+        <rect></rect>
+    </svg>
+
+    <script>
+        // d3.select("body").selectAll("p").text("www.ourd3js.com");
+        var str = "China";
+
+        var dataset = ["I like dog", "I like cat", "I like snake",];
+
+        var body = d3.select("body");
+        var p = body.selectAll("p");
+
+        var div = body.selectAll('div')
+
+        div.data(dataset)
+
+        p.datum(str);
+
+        p.text(function (d, i) {
+            return "第 " + i + " 个元素绑定的数据是 " + d;
+        });
+
+        div.text(function (d, i) {
+                return d
+            }).style('color', 'red')
+            // 在选择集末尾插入元素
+            .append('p').text('append p element')
+
+        // 在选择集前面插入元素
+        body.insert("p", "#myid")
+            .text('添加 一个id 为 myid 的p标签')
+
+        // 设置画布的 宽高
+        var width = 300; //画布的宽度
+        var height = 300; //画布的高度
+        // body.append('svg')
+        //     .attr("width", width)
+        //     .attr("height", height)
+
+
+        var $data =  [ 250 , 210 , 170 , 130 , 90 ];
+
+        var rectHeight = 25;   //每个矩形所占的像素高度(包括空白)
+
+        var svg = d3.select('svg')
+
+       
+        
+    </script>
+</body>
+
+</html>
