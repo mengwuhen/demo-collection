@@ -503,7 +503,7 @@ obj.say(); // 11
 
 
 ### 介绍路由的history
-
+> React Router 是建立在 history 之上的。 常见的
 
 ### 介绍Redux数据流的流程
 
@@ -515,3 +515,28 @@ obj.say(); // 11
 
 
 ### 常见Http请求头
+> Accept	可接受的响应内容类型（Content-Types）。	Accept: text/plain	固定
+> Accept-Charset	可接受的字符集	Accept-Charset: utf-8	固定
+> Accept-Encoding	可接受的响应内容的编码方式。	Accept-Encoding: gzip, deflate	固定
+> Accept-Language	可接受的响应内容语言列表。	Accept-Language: en-US	固定
+> Accept-Datetime	可接受的按照时间来表示的响应内容版本	Accept-Datetime: Sat, 26 Dec 2015 17:30:00 GMT	临时
+> Authorization	用于表示HTTP协议中需要认证资源的认证信息	Authorization: Basic OSdjJGRpbjpvcGVuIANlc2SdDE==	固定
+> Cache-Control	用来指定当前的请求/回复中的，是否使用缓存机制。	Cache-Control: no-cache	固定
+> Connection	客户端（浏览器）想要优先使用的连接类型	Connection: keep-alive
+> Connection: Upgrade 固定
+> Cookie	由之前服务器通过Set-Cookie（见下文）设置的一个HTTP协议Cookie	Cookie: $Version=1; Skin=new;	固定：标准
+> Content-Length	以8进制表示的请求体的长度	Content-Length: 348	固定
+> Content-MD5	请求体的内容的二进制 MD5 散列值（数字签名），以 Base64 编码的结果	Content-MD5: oD8dH2sgSW50ZWdyaIEd9D==	废弃
+> Content-Type	请求体的MIME类型 （用于POST和PUT请求中）	Content-Type: application/x-www-form-urlencoded	固定
+> Date	发送该消息的日期和时间（以RFC 7231中定义的"HTTP日期"格式来发送）	Date: Dec, 26 Dec 2015 17:30:00 GMT	固定
+> Expect	表示客户端要求服务器做出特定的行为	Expect: 100-continue	固定
+> From	发起此请求的用户的邮件地址	From: user@itbilu.com	固定
+> Host	表示服务器的域名以及服务器所监听的端口号。如果所请求的端口是对应的服务的标准端口（80），则端口号可以省略。	Host: www.itbilu.com:80
+> Host: www.itbilu.com 固定
+
+> Origin	发起一个针对跨域资源共享的请求（该请求要求服务器在响应中加入一个Access-Control-Allow-Origin的消息头，表示访问控制所允许的来源）。	Origin: http://www.itbilu.com	固定: 标准
+> Pragma	与具体的实现相关，这些字段可能在请求/回应链中的任何时候产生。	Pragma: no-cache	固定
+> Proxy-Authorization	用于向代理进行认证的认证信息。	Proxy-Authorization: Basic IOoDZRgDOi0vcGVuIHNlNidJi2==	固定
+> Range	表示请求某个实体的一部分，字节偏移以0开始。	Range: bytes=500-999	固定
+> Referer	表示浏览器所访问的前一个页面，可以认为是之前访问页面的链接将浏览器带到了当前页面。Referer其实是Referrer这个单词，但RFC制作标准时给拼错了，后来也就将错就错使用Referer了。	Referer: http://itbilu.com/nodejs	固定
+> User-Agent	浏览器的身份标识字符串	User-Agent: Mozilla/……	固定

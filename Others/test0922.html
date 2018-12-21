@@ -8,35 +8,67 @@
 </head>
 <body>
     <script>
-        class Animal {
-            constructor(name, number){
-                this.name = name || 0
-                this.number = number || 'animal'
-                this.say = this.sayName.bind(this)
-            }
+        // class Animal {
+        //     constructor(name, number){
+        //         this.name = name || 0
+        //         this.number = number || 'animal'
+        //         this.say = this.sayName.bind(this)
+        //     }
 
-            sayName(){
-                console.warn('my name is'+ this.name)
-            }
+        //     sayName(){
+        //         console.warn('my name is'+ this.name)
+        //     }
 
-            sayHello(){
-                console.warn('ni hao')
-            }
-        }    
+        //     sayHello(){
+        //         console.warn('ni hao')
+        //     }
+        // }    
 
-        class Dog extends Animal {
+        // class Dog extends Animal {
 
-            bark(){
-                console.log('wang wang')
-            }
+        //     bark(){
+        //         console.log('wang wang')
+        //     }
+        // }
+
+        // let animal = new Animal()
+        // console.warn(animal)
+
+        // let dog = new Dog('狗',100)
+        // console.warn(dog)
+        // dog.sayName()
+        
+        async function async1() {
+            console.log( 'async1 start' )
+            await async2()
+            console.log( 'async1 end' )
+        }
+        async function async2() {
+            console.log( 'async2' )
+        }
+        console.log( 'script start' )
+        setTimeout( function () {
+            console.log( 'setTimeout' )
+        }, 0 )
+        async1();
+        
+        new Promise( function ( resolve ) {
+            console.log( 'promise1' )
+            resolve();
+        } ).then( function () {
+            console.log( 'promise2' )
+        } )
+        console.log( 'script end' )
+
+        var Obj = function(){
+
         }
 
-        let animal = new Animal()
-        console.warn(animal)
-
-        let dog = new Dog('狗',100)
-        console.warn(dog)
-        dog.sayName()
+        Obj.prototype.haloNodeColor = function() {
+            console.warn(this)
+        }
+        var a = new Obj()
+        a.haloNodeColor()
     </script>
 </body>
 </html>
