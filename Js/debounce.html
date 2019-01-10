@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>debounce</title>
+    <style>
+        #container {
+            width: 100%;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            color: #fff;
+            background-color: #444;
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+        // 防抖的原理就是：你尽管触发事件，但是我一定在事件触发 n 秒后才执行，如果你在一个事件触发的 n 秒内又触发了这个事件，那我就以新的事件的时间为准，n 秒后才执行，总之，就是要等你触发完事件 n 秒内不再触发事件，我才执行!
+
+        var count = 1;
+        var container = document.getElementById('container');
+
+        function getUserAction(e) {
+            console.warn(this)
+            container.innerHTML = count++;
+        };
+
+        container.onmousemove = debounce(getUserAction, 1000, true);
+
+
+        function debounce(func, wait, immediate) {
+            var timeout;
+
+            // version 1
+            // return function () {
+            //     clearTimeout(timeout)
+            //     timeout = setTimeout(func, wait);
+            // }
+
+            // version 2
+            // return function () {
+            //     var context = this;
+            //     clearTimeout(timeout)
+            //     timeout = setTimeout(function () {
+            //         func.apply(context)
+            //     }, wait);
+            // }
+
+            // version 3
+            // return function () {
+            //     var context = this;
+            //     var args = arguments;
+            //     console.warn(arguments)
+            //     clearTimeout(timeout)
+            //     timeout = setTimeout(function () {
+            //         func.apply(context, args)
+            //     }, wait);
+            // }
+
+            // version 4
+            // return function () {
+            //     var context = this;
+            //     var args = arguments;
+
+            //     if (timeout) clearTimeout(timeout);
+            //     if (immediate) {
+            //         // 如果已经执行过，不再执行
+            //         var callNow = !timeout;
+            //         timeout = setTimeout(function () {
+            //             timeout = null;
+            //         }, wait)
+            //         if (callNow) func.apply(context, args)
+            //     } else {
+            //         timeout = setTimeout(function () {
+            //             func.apply(context, args)
+            //         }, wait);
+            //     }
+            // }
+
+            // version 5
+            return function () {
+                var context = this;
+                var args = arguments;
+
+                if (timeout) clearTimeout(timeout);
+                if (immediate) {
+                    // 如果已经执行过，不再执行
+                    var callNow = !timeout;
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                    }, wait)
+                    if (callNow) result = func.apply(context, args)
+                } else {
+                    timeout = setTimeout(function () {
+                        func.apply(context, args)
+                    }, wait);
+                }
+                return result;
+            }
+        }
+    </script>
+</body>
+
+</html>

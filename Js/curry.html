@@ -45,21 +45,22 @@
 
         // this 指向
         var length = 10;
-function fn() {
-    console.log(this.length)
-};
-var obj = {
-    length: 5, 
-    method: function (fn) {
-        fn();
-        arguments[0]();
-        fn.call(obj, 12);
-    }
-};
-obj.method(fn, 1);
-// 10 此时 this = window
-// 2  此时 this = method
-// 5  此时 this = obj
+
+        function fn() {
+            console.log(this.length)
+        };
+        var obj = {
+            length: 5,
+            method: function (fn) {
+                fn();
+                arguments[0]();
+                fn.call(obj, 12);
+            }
+        };
+        obj.method(fn, 1);
+        // 10 此时 this = window
+        // 2  此时 this = method
+        // 5  此时 this = obj
     </script>
 </body>
 

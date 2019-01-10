@@ -15,4 +15,9 @@
 > no-store 绝对禁止缓存
 > must-revalidate指定如果页面是过期的，则去服务器进行获取。
 
-##### 
+##### 盒模型
+盒模型 content + padding + border + margin
+
+> ie  width = content + padding + border  box-sizing: border-box;
+> google width = content  box-sizing: content-box;
+

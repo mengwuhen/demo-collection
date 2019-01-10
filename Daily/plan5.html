@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片自适应宽高</title>
+    <style>
+        .box {
+            width: 50%;
+            margin: 50px auto;
+        }
+
+        .img-box {
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .img-box img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: auto;
+            z-index: -1;
+            *zoom: 1;
+        }
+
+        .img-box:before {
+            content: "";
+            display: inline-block;
+            padding-bottom: 100%;
+            width: 0.1px;
+            /*必须要有数值，否则无法把高度撑起来*/
+            vertical-align: middle;
+        }
+
+
+        /* 方法二 */
+
+        .img-box2 {
+            padding-bottom: 100%;
+        }
+
+        .img-box2 img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <span>行内元素垂直居中</span>
+        <div class="img-box">
+            <img src="../assets/img/123.png" />
+        </div>
+    </div>
+
+    <!-- 方式二 -->
+    <div class="box">
+        <div class="img-box2">
+            <img src="../assets/img/123.png" alt="">
+        </div>
+    </div>
+
+</body>
+
+</html>

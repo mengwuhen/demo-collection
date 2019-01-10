@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>throttle</title>
+</head>
+
+<body>
+    <!-- 如果你持续触发事件，每隔一段时间，只执行一次事件。
+        根据首次是否执行以及结束后是否执行，效果有所不同，实现的方式也有所不同。
+        我们用 leading 代表首次是否执行，trailing 代表结束后是否再执行一次。 -->
+
+    <script>
+        function throttle(func, wait, options) {
+            var timeout, context, args, result;
+            var previous = 0;
+            if (!options) options = {};
+
+            var later = function () {
+                previous = options.leading === false ? 0 : new Date().getTime();
+                timeout = null;
+                func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+
+            var throttled = function () {
+                var now = new Date().getTime();
+                if (!previous && options.leading === false) previous = now;
+                var remaining = wait - (now - previous);
+                context = this;
+                args = arguments;
+                if (remaining <= 0 || remaining > wait) {
+                    if (timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    previous = now;
+                    func.apply(context, args);
+                    if (!timeout) context = args = null;
+                } else if (!timeout && options.trailing !== false) {
+                    timeout = setTimeout(later, remaining);
+                }
+            };
+            return throttled;
+        }
+    </script>
+</body>
+
+</html>

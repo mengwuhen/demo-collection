@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>外边距折叠 && 边框塌陷</title>
+
+    <!-- 多个相邻（兄弟或者父子关系）普通流的块元素垂直方向marigin会重叠
+
+    折叠的结果为：
+
+    两个相邻的外边距都是正数时，折叠结果是它们两者之间较大的值。
+    两个相邻的外边距都是负数时，折叠结果是两者绝对值的较大值。
+    两个外边距一正一负时，折叠结果是两者的相加的和。 -->
+
+    <!-- BFC -->
+    <!-- BFC布局特性
+    1. 内部的盒会在垂直方向一个接一个排列（可以看作BFC中有一个的常规流）；
+
+    2. 处于同一个BFC中的元素相互影响，可能会发生margin collapse；
+
+    3. 每个元素的margin box的左边，与容器块border box的左边相接触
+    (对于从左往右的格式化，否则相反)。即使存在浮动也是如此；
+
+    4. BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然；
+
+    5. 计算BFC的高度时，考虑BFC所包含的所有元素，连浮动元素也参与计算；
+
+    6. 浮动盒区域不叠加到BFC上 -->
+
+    <!-- 哪些元素会生成BFC？
+    1. 根元素 <html>
+    2. float属性不为none
+    3. position为absolute或fixed
+    4. display为inline-block, table-cell, table-caption, flex, inline-flex
+    5. overflow不为visible -->
+
+    <!-- 解决办法
+    边框，当然可以设置边框为透明;
+    为父容器添加padding，或者至少添加padding-top;
+    将父容器BFC化; -->
+
+
+    <style>
+        .text {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000;
+
+            margin-bottom: 10px;
+        }
+
+        .text2 {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+
+            margin-top: 10px;
+        }
+
+        .father {
+            width: 150px;
+            height: 150px;
+            /* display: inline-block; */
+            background: powderblue;
+        }
+
+        .child {
+            width: 50px;
+            height: 50px;
+            background: pink;
+            margin-top: 20px;
+        }
+
+
+        /* 特性分析 */
+
+        .bfc {
+            background-color: lightblue;
+            overflow: hidden;
+            width: 500px;
+        }
+
+        p {
+            background-color: lightcoral;
+            height: 50px;
+            line-height: 50px;
+            margin: 10px;
+        }
+
+        .new-bfc {
+            overflow: hidden;
+        }
+
+        body {
+            margin: 0;
+            padding: 200px;
+        }
+
+        #box {
+            background: lightblue;
+            width: 600px;
+        }
+
+        .right {
+            background: lightcoral;
+            opacity: 0.5;
+            border: 3px solid saddlebrown;
+            width: 300px;
+            min-height: 100px;
+
+            float: left ;
+        }
+
+        .left {
+            background: lightseagreen;
+            border: 3px solid saddlebrown;
+            width: 200px;
+            height: 200px;
+
+            float: left;
+        }
+
+        .item {
+            background: lightslategrey;
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 双边距重叠 -->
+    <div class="text"></div>
+    <div class="text2"></div>
+
+    <!-- 内边框塌陷 -->
+    <div class="father">
+        <div class="child"></div>
+    </div>
+
+
+
+    <!-- 特性分析 -->
+    <!-- 特性 1 2 4 -->
+    <div class="bfc">
+        <p>children 1</p>
+        <p>children 2</p>
+        <p>children 3</p>
+        <div class="new-bfc">
+            <p>children 4</p>
+        </div>
+    </div>
+
+    <!-- 特性 3 5 6 -->
+    <div id="box">
+        <div class="left">
+        </div>
+        <div class="right">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </div>
+
+    <!-- 特性4 -->
+</body>
+
+</html>
