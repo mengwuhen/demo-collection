@@ -14,6 +14,41 @@
         我们用 leading 代表首次是否执行，trailing 代表结束后是否再执行一次。 -->
 
     <script>
+        // 第一版
+        function throttle(func, wait) {
+            var context, args;
+            var previous = 0;
+
+            return function () {
+                var now = +new Date();
+                context = this;
+                args = arguments;
+                if (now - previous > wait) {
+                    func.apply(context, args);
+                    previous = now;
+                }
+            }
+        }
+
+        // 第二版
+        function throttle(func, wait) {
+            var timeout;
+            var previous = 0;
+
+            return function () {
+                context = this;
+                args = arguments;
+                if (!timeout) {
+                    timeout = setTimeout(function () {
+                        timeout = null;
+                        func.apply(context, args)
+                    }, wait)
+                }
+
+            }
+        }
+
+        //  第四
         function throttle(func, wait, options) {
             var timeout, context, args, result;
             var previous = 0;

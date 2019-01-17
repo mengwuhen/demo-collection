@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Class 的使用</title>
+</head>
+<body>
+    <img src="../assets/img/prototype.png" alt="es5 原型链">
+    <script>
+        class Point {
+            constructor() {
+                // ...
+            }
+            toString() {
+                // ...
+            }
+            toValue() {
+                // ...
+            }
+        }
+        // 等同于
+        // Point.prototype = {
+        //     constructor() {},
+        //     toString() {},
+        //     toValue() {},
+        // };
+
+        // prototype对象的constructor属性，直接指向“类”的本身，这与 ES5 的行为是一致的。
+        Point.prototype.constructor === Point // true
+
+        // 类的内部所有定义的方法，都是不可枚举的（non-enumerable）。 与 es5  不同
+        // 类必须使用new调用，否则会报错。这是它跟普通构造函数的一个主要区别，后者不用new也可以执行。
+       
+        
+
+
+
+    </script>
+</body>
+
+</html>
