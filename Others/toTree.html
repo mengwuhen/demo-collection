@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    var data = [
+        {id: 1, text: 't11', parentId: 0},
+        {id: 2, text: 't11', parentId: 0},
+        {id: 3, text: 't11', parentId: 1},
+        {id: 4, text: 't11', parentId: 1},
+        {id: 5, text: 't11', parentId: 3},
+        {id: 6, text: 't11', parentId: 2},
+    ];
+    data.forEach(ele => {
+
+    let parentId = ele.parentId;
+    if (parentId === 0) {
+        //是根元素的hua ,不做任何操作,如果是正常的for-i循环,可以直接continue.
+    } else {
+        //如果ele是子元素的话 ,把ele扔到他的父亲的child数组中.
+        data.forEach(d => {
+        if (d.id === parentId) {
+            let childArray = d.child;
+            if (!childArray) {
+            childArray = []
+            }
+            childArray.push(ele);
+            d.child = childArray;
+        }
+
+        })
+    }
+
+    });
+
+    console.warn(data)
+    </script>
+</body>
+</html>

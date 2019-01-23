@@ -11,8 +11,9 @@
 <body>
     <script>
         //函数柯里化指的是将能够接收多个参数的函数转化为接收单一参数的函数，并且返回接收余下参数且返回结果的新函数的技术。
+        // 实现函数重入的时候保存之前的状态
         // 基础版
-        function curry(fn) {
+        function curry1(fn) {
             var args = Array.prototype.slice.call(arguments, 1);
             return function () {
                 var newArgs = args.concat(Array.prototype.slice.call(arguments));
@@ -22,8 +23,10 @@
         // 改进版
         function curry(fn, args) {
             var length = fn.length;
+            console.warn(args)
             var args = args || [];
             return function () {
+                console.warn(Array.prototype.slice.call(arguments))
                 newArgs = args.concat(Array.prototype.slice.call(arguments));
                 if (newArgs.length < length) {
                     return curry.call(this, fn, newArgs);
@@ -47,11 +50,13 @@
         var length = 10;
 
         function fn() {
+            console.warn(this)
             console.log(this.length)
         };
         var obj = {
             length: 5,
             method: function (fn) {
+                console.warn(arguments)
                 fn();
                 arguments[0]();
                 fn.call(obj, 12);
