@@ -165,3 +165,32 @@ compile: function(tElement, tAttrs, transclude) {
 > angular 作为mvc的框架，在 **表现与行为** 分离上执行的更彻底一些。react 采用jsx 将html 和 js 融合在一起，对于新手不够友好。
 * 相同点
 > angularJs 虽然没有组件的概念，但是在 自定义指令 中 和react 的组件化 思想大同小异。
+
+#### $scope.$apply 和 $scope.$digest()  的区别
+* $scope.$apply和$scope.$digest都可以手动触发脏值检查实现数据双向同步；将数据实时表现在界面上；
+* 当调用$digest的时候，只触发当前作用域和它的子作用域上的监控，但是当调用$apply的时候，会触发作用域树上的所有监控
+
+#### $scope.$watch 
+
+> angular的实现是使用脏检查
+ >>不会脏检查所有的对象，当对象被绑定到html中，这个对象添加为检查对象(watcher)。
+ >>不会脏检查所有的属性，同样当属性被绑定后，这个属性会被列为检查的属性。
+ >>在angular程序初始化时，会将绑定的对象的属性添加为监听对象(watcher)，也就是说一个对象绑定了N个属性，就会添加N个watcher。
+
+
+* $watch(watchFn,watchAction,deepWatch)
+* watchFn:angular表达式或函数的字符串
+* watchAction(newValue,oldValue,scope):watchFn发生变化会被调用
+* deepWatch：可选的布尔值命令检查被监控的对象的每个属性是否发生变化 //(如果不加第三个参数，那么只会监听data，只有当data引用改变时才会触发) 当需要监听一些引用对象需要把第三个参数设置成true。
+```js
+    $scope.$watch("data", _.debounce(watchFunction,30),true);
+```
+* $watch会返回一个函数，想要注销这个watch 可以使用函数
+
+```js
+var listener = $scope.$watch("quartz", function () {});
+// ...
+listener(); // Would clear the watch
+```
+  
+

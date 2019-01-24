@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .page-list {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .page-list li {
+            cursor: pointer;
+        }
+
+        .page-total {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .page-list ul {
+            margin-right: 16px;
+        }
+
+        .page-list input {
+            width: 60px;
+            text-align: center;
+        }
+
+        .pagination {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px
+}
+
+.pagination > li {
+    display: inline
+}
+
+.pagination > li > a, .pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd
+}
+
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px
+}
+
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px
+}
+
+.pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
+    color: #23527c;
+    background-color: #eee;
+    border-color: #ddd
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7
+}
+
+.pagination > .disabled > a, .pagination > .disabled > a:focus, .pagination > .disabled > a:hover, .pagination > .disabled > span, .pagination > .disabled > span:focus, .pagination > .disabled > span:hover {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd
+}
+
+.pagination-lg > li > a, .pagination-lg > li > span {
+    padding: 10px 16px;
+    font-size: 18px
+}
+
+.pagination-lg > li:first-child > a, .pagination-lg > li:first-child > span {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px
+}
+
+.pagination-lg > li:last-child > a, .pagination-lg > li:last-child > span {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px
+}
+
+.pagination-sm > li > a, .pagination-sm > li > span {
+    padding: 5px 10px;
+    font-size: 12px
+}
+
+.pagination-sm > li:first-child > a, .pagination-sm > li:first-child > span {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px
+}
+
+.pagination-sm > li:last-child > a, .pagination-sm > li:last-child > span {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px
+}
+
+.pager {
+    padding-left: 0;
+    margin: 20px 0;
+    text-align: center;
+    list-style: none
+}
+
+.pager li {
+    display: inline
+}
+
+.pager li > a, .pager li > span {
+    display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px
+}
+
+.pager li > a:focus, .pager li > a:hover {
+    text-decoration: none;
+    background-color: #eee
+}
+
+.pager .next > a, .pager .next > span {
+    float: right
+}
+
+.pager .previous > a, .pager .previous > span {
+    float: left
+}
+
+.pager .disabled > a, .pager .disabled > a:focus, .pager .disabled > a:hover, .pager .disabled > span {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff
+}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+</head>
+
+<body>
+
+    <div ng-app="myApp" class="wp-20" ng-controller="myCtrl" ng-cloak>
+        <div class="panel-footer">
+            <s-pagination conf="conf"></s-pagination>
+        </div>
+    </div>
+
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            var getTableDataSuccess = function (result) {
+                if (result.c == 1) {
+                    $scope.title = result.title;
+                    $scope.lists = result.pageList;
+                    $scope.total = result.data;
+                    $scope.paginationConf.totalItems = result.total;
+                } else if (result.c == 2) {
+                    //弹出框，没有查到数据 
+                } else {
+                    alert(result.i);
+                }
+            };
+
+            var getTableDataError = function (result) {
+                alert(result);
+            };
+            /*重要的代码，这个paginationConf与自定义指令双向绑定数据*/
+            $scope.conf = {
+                currentPage: 1,
+                itemsPerPage: 10,
+                pagesLength: 9,
+                totalItems: 1000,
+                search: false,
+                onChange: function () {
+                    var param = {
+                        "pageNo": this.currentPage,
+                        "pageSize": this.itemsPerPage,
+                    };
+                }
+            };
+
+        })
+
+        // angularjs  version v1.4.6
+
+        angular.module('myApp').directive('sPagination', [function () { //自定义指令
+            return {
+                restrict: 'E', //仅限元素名调用
+                template: '<div><div class="page-list">' +
+                    '<ul class="pagination" ng-show="conf.totalItems > 0">' +
+                    '<li ng-class="{disabled: conf.currentPage == 1}" ng-click="prevPage()"><span>&laquo;</span></li>' +
+                    '<li ng-repeat="item in pageList track by $index" ng-class="{active: item == conf.currentPage, separate: item == \'...\'}" ' +
+                    'ng-click="changeCurrentPage(item)">' +
+                    '<span>{{ item }}</span>' +
+                    '</li>' +
+                    '<li ng-class="{disabled: conf.currentPage == conf.numberOfPages}" ng-click="nextPage()"><span>&raquo;</span></li>' +
+                    '</ul>' +
+                    '<div class="page-total" ng-show="conf.totalItems > 0">' +
+                    '第<input type="text" ng-model="jumpPageNum"  ng-keyup="jumpToPage($event)"/>页 ' +
+                    '每页<select ng-model="conf.itemsPerPage" ng-options="option for option in conf.perPageOptions "></select>' +
+                    '/共<strong>{{ conf.totalItems }}</strong>条' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="no-items" ng-show="conf.totalItems <= 0">暂无数据</div></div>',
+
+                replace: true, //（布尔型）默认为false(模板内容会加载到标签内部)，true(模板内容会替换当前标签)
+                scope: {
+                    conf: '=' //双向绑定数据  //“=” 双向绑定：本地作用域上的属性同父级作用域上的属性进行双向的数据绑定。 //"@"  本地作用域属性：使用当前指令中的数据和DOM属性的值进行绑定  //“&” 父级作用域绑定：通过 & 符号可以对父级作用域进行绑定
+                },
+                link: function (scope, element, attrs) {
+                    // 变更当前页
+                    // console.warn(scope.conf)
+                    scope.changeCurrentPage = function (item) {
+                        if (item == '...') {
+                            return;
+                        } else {
+                            scope.conf.currentPage = item;
+                        }
+                    };
+                    // 定义分页的长度必须为奇数 (default:5)
+                    console.warn(scope)
+                    scope.conf.pagesLength = parseInt(scope.conf.pagesLength) ? parseInt(scope.conf.pagesLength) :
+                        5;
+
+                    if (scope.conf.pagesLength % 2 === 0) {
+                        // 如果不是奇数的时候处理一下
+                        scope.conf.pagesLength = scope.conf.pagesLength - 1;
+                    }
+
+                    // conf.erPageOptions 
+                    if (!scope.conf.perPageOptions) {
+                        scope.conf.perPageOptions = [10, 20, 30, 40, 50];
+                    }
+
+                    // pageList数组
+                    function getPagination(newValue, oldValue) {
+                        //新增属性search   用于附加搜索条件改变时触发
+                        if (newValue[1] != oldValue[1] || newValue[2] != oldValue[2]) {
+                            scope.conf.search = true;
+                        }
+                        // conf.currentPage  当前页
+                        scope.conf.currentPage = parseInt(scope.conf.currentPage) ? parseInt(scope.conf
+                            .currentPage) : 1;
+
+                        // conf.totalItems  
+                        scope.conf.totalItems = parseInt(scope.conf.totalItems) ? parseInt(scope.conf.totalItems) :
+                            0;
+
+                        // conf.itemsPerPage (default:10)  pagesize
+                        scope.conf.itemsPerPage = parseInt(scope.conf.itemsPerPage) ? parseInt(scope.conf
+                            .itemsPerPage) : 10;
+
+                        // numberOfPages  一共多少页
+                        scope.conf.numberOfPages = Math.ceil(scope.conf.totalItems / scope.conf.itemsPerPage);
+                        // judge currentPage > scope.numberOfPages
+                        if (scope.conf.currentPage < 1) {
+                            scope.conf.currentPage = 1;
+                        }
+
+                        // 如果分页总数>0，并且当前页大于分页总数
+                        if (scope.conf.numberOfPages > 0 && scope.conf.currentPage > scope.conf.numberOfPages) {
+                            scope.conf.currentPage = scope.conf.numberOfPages;
+                        }
+
+                        // jumpPageNum
+                        scope.jumpPageNum = scope.conf.currentPage;
+
+                        // 如果itemsPerPage在不在perPageOptions数组中，就把itemsPerPage加入这个数组中
+                        var perPageOptionsLength = scope.conf.perPageOptions.length;
+                        // 定义状态
+                        var perPageOptionsStatus;
+                        for (var i = 0; i < perPageOptionsLength; i++) {
+                            if (scope.conf.perPageOptions[i] == scope.conf.itemsPerPage) {
+                                perPageOptionsStatus = true;
+                            }
+                        }
+                        // 如果itemsPerPage在不在perPageOptions数组中，就把itemsPerPage加入这个数组中
+                        if (!perPageOptionsStatus) {
+                            scope.conf.perPageOptions.push(scope.conf.itemsPerPage);
+                        }
+
+                        // 对pagesize选项进行sort 
+                        scope.conf.perPageOptions.sort(function (a, b) {
+                            return a - b
+                        });
+
+                        scope.pageList = [];
+
+                        if (scope.conf.numberOfPages <= scope.conf.pagesLength) {
+                            // 判断总页数如果小于等于分页的长度，若小于则直接显示
+                            for (i = 1; i <= scope.conf.numberOfPages; i++) {
+                                scope.pageList.push(i);
+                            }
+                        } else {
+                            // 总页数大于分页长度（此时分为三种情况：1.左边没有...2.右边没有...3.左右都有...）
+                            // 计算中心偏移量
+                            var offset = (scope.conf.pagesLength - 1) / 2;
+                            if (scope.conf.currentPage <= offset) {
+                                // 左边没有...
+                                for (i = 1; i <= offset + 1; i++) {
+                                    scope.pageList.push(i);
+                                }
+                                scope.pageList.push('...');
+                                scope.pageList.push(scope.conf.numberOfPages);
+                            } else if (scope.conf.currentPage > scope.conf.numberOfPages - offset) {
+                                scope.pageList.push(1);
+                                scope.pageList.push('...');
+                                for (i = offset + 1; i >= 1; i--) {
+                                    scope.pageList.push(scope.conf.numberOfPages - i);
+                                }
+                                scope.pageList.push(scope.conf.numberOfPages);
+                            } else {
+                                // 最后一种情况，两边都有...
+                                scope.pageList.push(1);
+                                scope.pageList.push('...');
+
+                                for (i = Math.ceil(offset / 2); i >= 1; i--) {
+                                    scope.pageList.push(scope.conf.currentPage - i);
+                                }
+                                scope.pageList.push(scope.conf.currentPage);
+                                for (i = 1; i <= offset / 2; i++) {
+                                    scope.pageList.push(scope.conf.currentPage + i);
+                                }
+
+                                scope.pageList.push('...');
+                                scope.pageList.push(scope.conf.numberOfPages);
+                            }
+                        }
+
+                        if (scope.conf.onChange) {
+                            //请求数据
+                            if (scope.conf.search) {
+                                scope.conf.onChange();
+                                scope.conf.search = false;
+                            }
+
+                        }
+                        scope.$parent.conf = scope.conf;
+                    }
+
+                    // prevPage
+                    scope.prevPage = function () {
+                        if (scope.conf.currentPage > 1) {
+                            scope.conf.currentPage -= 1;
+                        }
+                    };
+                    // nextPage
+                    scope.nextPage = function () {
+                        if (scope.conf.currentPage < scope.conf.numberOfPages) {
+                            scope.conf.currentPage += 1;
+                        }
+                    };
+
+                    // 跳转页
+                    scope.jumpToPage = function () {
+                        scope.jumpPageNum = scope.jumpPageNum.replace(/[^0-9]/g, '');
+                        if (scope.jumpPageNum !== '') {
+                            scope.conf.currentPage = scope.jumpPageNum;
+                        }
+                    };
+
+                    scope.$watch(function () {
+                        if (!scope.$parent.conf.totalItems) {
+                            scope.$parent.conf.totalItems = 0;
+                        }
+                        // watchFn:angular表达式或函数的字符串
+                        // watchAction(newValue,oldValue,scope):watchFn发生变化会被调用
+                        // deepWatch：可选的布尔值命令检查被监控的对象的每个属性是否发生变化
+                        // $watch会返回一个函数，想要注销这个watch可以使用函数
+                        // $watch(watchFn,watchAction,deepWatch)
+
+                        //  这里其实可以直接使用 scope.conf
+                        var newValue = [scope.$parent.conf.totalItems, scope.$parent.conf.currentPage,
+                            scope.$parent.conf.itemsPerPage, scope.$parent.conf.search
+                        ];
+                        return newValue;
+                    }, getPagination, true);
+                }
+            };
+        }]);
+    </script>
+</body>
+
+</html>
