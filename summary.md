@@ -289,35 +289,33 @@ obj.say(); // 11
  > 使用 document.body.scrollTop
 
  * 此时有必要区分一下 获取页面卷曲高度的  相关概念
- >网页可见区域宽： document.body.clientWidth;
->网页可见区域高： document.body.clientHeight;
->网页可见区域宽： document.body.offsetWidth    (包括边线的宽);
->网页可见区域高： document.body.offsetHeight   (包括边线的宽);
->网页正文全文宽： document.body.scrollWidth;
->网页正文全文高： document.body.scrollHeight;
->网页被卷去的高： document.body.scrollTop;
->网页被卷去的左： document.body.scrollLeft;
->网页正文部分上： window.screenTop;
->网页正文部分左： window.screenLeft;
->屏幕分辨率的高： window.screen.height;
->屏幕分辨率的宽： window.screen.width;
->屏幕可用工作区高度： window.screen.availHeight;
->屏幕可用工作区宽度：window.screen.availWidth;
->scrollHeight: 获取对象的滚动高度。  
->scrollLeft:设置或获取位于对象左边界和窗口中目前可见内容的最左端之间的距离
->scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离
->scrollWidth:获取对象的滚动宽度
->offsetHeight:获取对象相对于版面或由父坐标 offsetParent 属性指定的父坐标的高度
->offsetLeft:获取对象相对于版面或由 offsetParent 属性指定的父坐标的计算左侧位置
->offsetTop:获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置  
->event.clientX 相对文档的水平座标
->event.clientY 相对文档的垂直座标
->event.offsetX 相对容器的水平坐标
->event.offsetY 相对容器的垂直坐标  
->document.documentElement.scrollTop 垂直方向滚动的值
->event.clientX+document.documentElement.scrollTop 相对文档的水平座标+垂直方向滚动的量
->---------------------
->本文来自 德魁 的CSDN 博客 ，全文地址请点击：https://blog.csdn.net/DekuiCaiNiao/article/details/79041685?utm_source=copy 
+  >网页可见区域宽： document.body.clientWidth;
+  >网页可见区域高： document.body.clientHeight;
+  >网页可见区域宽： document.body.offsetWidth    (包括边线的宽);
+  >网页可见区域高： document.body.offsetHeight   (包括边线的宽);
+  >网页正文全文宽： document.body.scrollWidth;
+  >网页正文全文高： document.body.scrollHeight;
+  >网页被卷去的高： document.body.scrollTop;
+  >网页被卷去的左： document.body.scrollLeft;
+  >网页正文部分上： window.screenTop;
+  >网页正文部分左： window.screenLeft;
+  >屏幕分辨率的高： window.screen.height;
+  >屏幕分辨率的宽： window.screen.width;
+  >屏幕可用工作区高度： window.screen.availHeight;
+  >屏幕可用工作区宽度：window.screen.availWidth;
+  >scrollHeight: 获取对象的滚动高度。  
+  >scrollLeft:设置或获取位于对象左边界和窗口中目前可见内容的最左端之间的距离
+  >scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离
+  >scrollWidth:获取对象的滚动宽度
+  >offsetHeight:获取对象相对于版面或由父坐标 offsetParent 属性指定的父坐标的高度
+  >offsetLeft:获取对象相对于版面或由 offsetParent 属性指定的父坐标的计算左侧位置
+  >offsetTop:获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置  
+  >event.clientX 相对文档的水平座标
+  >event.clientY 相对文档的垂直座标
+  >event.offsetX 相对容器的水平坐标
+  >event.offsetY 相对容器的垂直坐标  
+  >document.documentElement.scrollTop 垂直方向滚动的值
+  >event.clientX+document.documentElement.scrollTop 相对文档的水平座标+垂直方向滚动的量
 
 * 最后谈一下我们的优化 因为页面监听 scroll 事件 会消耗很多的资源，因此可以考虑 将scroll的 回调事件 设置为 防抖函数
 > 解决方法 
@@ -344,15 +342,11 @@ obj.say(); // 11
 ### jsx 对于部分css3 属性不支持的解决方法
 > 比如 boxShow 不支持，可以通过原生js方法获取dom节点，通过修改 style 属性来支持（没有什么是原生js解决不了的）
 
-
 ### 如何配置React-Router
-
 
 ### 路由的动态加载模块
 
-
 ### 服务端渲染SSR
-
 
 ### 介绍路由的history
 > React Router 是建立在 history 之上的。 常见的
@@ -385,15 +379,12 @@ obj.say(); // 11
 > From	发起此请求的用户的邮件地址	From: user@itbilu.com	固定
 > Host	表示服务器的域名以及服务器所监听的端口号。如果所请求的端口是对应的服务的标准端口（80），则端口号可以省略。	Host: www.itbilu.com:80
 > Host: www.itbilu.com 固定
-
 > Origin	发起一个针对跨域资源共享的请求（该请求要求服务器在响应中加入一个Access-Control-Allow-Origin的消息头，表示访问控制所允许的来源）。	Origin: http://www.itbilu.com	固定: 标准
 > Pragma	与具体的实现相关，这些字段可能在请求/回应链中的任何时候产生。	Pragma: no-cache	固定
 > Proxy-Authorization	用于向代理进行认证的认证信息。	Proxy-Authorization: Basic IOoDZRgDOi0vcGVuIHNlNidJi2==	固定
 > Range	表示请求某个实体的一部分，字节偏移以0开始。	Range: bytes=500-999	固定
 > Referer	表示浏览器所访问的前一个页面，可以认为是之前访问页面的链接将浏览器带到了当前页面。Referer其实是Referrer这个单词，但RFC制作标准时给拼错了，后来也就将错就错使用Referer了。	Referer: http://itbilu.com/nodejs	固定
 > User-Agent	浏览器的身份标识字符串	User-Agent: Mozilla/……	固定
-
-
 
 #### 前后端常见的几种鉴权方式
 > 目前我们常用的鉴权有四种：
@@ -429,7 +420,7 @@ session-cookie认证主要分四步：
    3.浏览器中收到请求响应的时候会解析响应头，然后将sid保存在本地cookie中，浏览器在下次http请求de 请求头中会带上该域名下的cookie信息， 
    4.服务器在接受客户端请求时会去解析请求头cookie中的sid，然后根据这个sid去找服务器端保存的该客户端的session，然后判断该请求是否合法。
 
-### 前端性能优化
+#### 前端性能优化
 ##### 静态资源优化
 > 主要包括html、css、js和图片文件，静态资源的加载时间 
 >> js、css文件压缩，图片压缩，gzip压缩：减少请求返回的数据量

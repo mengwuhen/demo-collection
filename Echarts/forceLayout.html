@@ -64,6 +64,7 @@
 					borderColor: 'red',
 				},
 				tooltip: {},
+
 				legend: [{
 					orient : 'vertical',
 					x: 'left',  // 决定了 图例的位置
@@ -71,7 +72,16 @@
 						return a.name;
 					})
 				}],
+				
 				animation: true,
+				animationDuration: function (idx) {
+					// 越往后的数据延迟越大
+					return idx * 100;
+				},
+				animationDelay: 1000,
+				animationThreshold: false,
+				animationEasing: 'backInOut',
+
 				series: [{
 					name: '',
 					type: 'graph', // 决定 图表的leix
