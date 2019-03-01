@@ -29,7 +29,7 @@ restrict: String,      //可选字符串参数，可以设置这个指令在DOM�
             // 设置为“E”(ele,(直接当做标签来使用)) <my-directive></my-directive>
             // C（类名）
             // <div class="my-directive:expression;"></div>
-            //M（注释）
+            // M（注释）
             //<--directive:my-directive expression-->
             //这些选项可以单独使用，也可以混合在一起使用：
             // angular.module('myDirective', function(){

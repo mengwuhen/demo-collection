@@ -120,3 +120,14 @@ console.log(document.createElement("script").async); // true
 >>
 
 
+#### for...in循环缺点。
+
+* 数组的键名是数字，但是for...in循环是以字符串作为键名“0”、“1”、“2”等等。
+* for...in循环不仅遍历数字键名，还会遍历手动添加的其他键，甚至包括原型链上的键。
+* 某些情况下，for...in循环会以任意顺序遍历键名。
+* 总之，for...in循环主要是为遍历对象而设计的，不适用于遍历数组。
+
+#### for...of循环
+* 不同于forEach方法，它可以与break、continue和return配合使用。提供了遍历所有数据结构的统一操作接口。
+
+

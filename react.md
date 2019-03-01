@@ -4,6 +4,8 @@
  #### 调用 setState 之后发生了什么？
  * 在代码中调用 setState 函数之后，React 会将传入的参数对象与组件当前的状态合并，然后触发所谓的调和过程（Reconciliation）。经过调和过程，React 会以相对高效的方式根据新的状态构建 React 元素树并且着手重新渲染整个 UI 界面。在 React 得到元素树之后，React 会自动计算出新的树与老树的节点差异，然后根据差异对界面进行最小化重渲染。在差异计算算法中，React 能够相对精确地知道哪些位置发生了改变以及应该如何改变，这就保证了按需更新，而不是全部重新渲染。
 
+ * setState 可以传一个对象，也可以传一个 函数 来修改 state。  二者的区别是 多次调用 setState 方法，如果传对象会合并对象生成最终state，如果传的是 函数的话，可以每次执行函数修改state。
+ 
  #### react 生命周期函数
 * 初始化阶段：
 * getDefaultProps:获取实例的默认属性
@@ -279,3 +281,63 @@ class MyComponent extends Component {
 ### redux-saga 的 race all 的区别
 * race 创建一个 Effect 描述信息，用来命令 middleware 在多个 Effect 间运行 竞赛，当 reslve race 的时候，middleware 会自动地取消所有输掉的 Effect。结果返回第一个完成的 effects。
 * all 创建一个 Effect 描述信息，用来命令 middleware 并行地运行多个 Effect，并等待它们全部完成。 当并发运行 Effect 时，middleware 将暂停 Generator，直到以下任一情况发生：所有 Effect 都成功完成：（1）返回一个包含所有 Effect 结果的数组，并恢复 Generator。（2）在所有 Effect 完成之前，有一个 Effect 被 reject：在 Generator 中抛出 reject 错误。
+
+### V16 生命周期函数用法建议
+class ExampleComponent extends React.Component {
+  // 用于初始化 state
+  constructor() {}
+  // 用于替换 `componentWillReceiveProps` ，该函数会在初始化和 `update` 时被调用
+  // 因为该函数是静态函数，所以取不到 `this`
+  // 如果需要对比 `prevProps` 需要单独在 `state` 中维护
+  static getDerivedStateFromProps(nextProps, prevState) {}
+  // 判断是否需要更新组件，多用于组件性能优化
+  shouldComponentUpdate(nextProps, nextState) {}
+  // 组件挂载后调用
+  // 可以在该函数中进行请求或者订阅
+  componentDidMount() {}
+  // 用于获得最新的 DOM 数据
+  getSnapshotBeforeUpdate() {}
+  // 组件即将销毁
+  // 可以在此处移除订阅，定时器等等
+  componentWillUnmount() {}
+  // 组件销毁后调用
+  componentDidUnMount() {}
+  // 组件更新后调用
+  componentDidUpdate() {}
+  // 渲染组件函数
+  render() {}
+  
+  // 以下函数不建议使用
+  UNSAFE_componentWillMount() {}
+  UNSAFE_componentWillUpdate(nextProps, nextState) {}
+  UNSAFE_componentWillReceiveProps(nextProps) {}
+}
+
+
+### React 最新api 总结
+* static getDerivedStateFromProps(nextProps, prevState)
+
+根据 getDerivedStateFromProps(nextProps, prevState) 的函数签名可知: 其作用是根据传递的 props 来更新 state。它的一大特点是 无副作用 : 由于处在 Render Phase 阶段，所以在每次的更新都要触发， 故在设计 API 时采用了静态方法，其好处是单纯 —— 无法访问实例、无法通过 ref 访问到 DOM 对象等，保证了单纯且高效。值得注意的是，其仍可以通过 props 的操作来产生副作用，这时应该将操作 props 的方法移到 componentDidUpdate 中，减少触发次数。
+
+```js
+state = { isLogin: false }
+
+static getDerivedStateFromProps(nextProps, prevState) {
+  if(nextProps.isLogin !== prevState.isLogin){
+    return {
+      isLogin: nextProps.isLogin
+    }
+  }
+  return null
+}
+
+componentDidUpdate(prevProps, prevState){
+  if(!prevState.isLogin && prevProps.isLogin) this.handleClose()
+}
+```
+但在使用时要非常小心，因为它不像 componentWillReceiveProps 一样，只在父组件重新渲染时才触发，本身调用 setState 也会触发。官方提供了 3 条 checklist,这里搬运一下：
+
+如果改变 props 的同时，有副作用的产生(如异步请求数据，动画效果)，这时应该使用 componentDidUpdate
+如果想要根据 props 计算属性，应该考虑将结果 memoization 化，参见 memoization
+如果想要根据 props 变化来重置某些状态，应该考虑使用受控组件
+配合 componentDidUpdate 周期函数，getDerivedStateFromProps 是为了替代 componentWillReceiveProps 而出现的。它将原本 componentWillReceiveProps 功能进行划分 —— 更新 state 和 操作/调用 props，很大程度避免了职责不清而导致过多的渲染, 从而影响应该性能。
