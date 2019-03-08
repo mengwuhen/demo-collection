@@ -87,7 +87,6 @@
             return function () {
                 var context = this;
                 var args = arguments;
-
                 if (timeout) clearTimeout(timeout);
                 if (immediate) {
                     // 如果已经执行过，不再执行

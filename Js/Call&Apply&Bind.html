@@ -34,6 +34,7 @@
         }
         //Call es6 实现
         Function.prototype.$call = function (context, ...arg) {
+            debugger
             context = context || window
             context.fn = this
             let result = context.fn(...arg)

@@ -284,34 +284,58 @@ class MyComponent extends Component {
 
 ### V16 生命周期函数用法建议
 class ExampleComponent extends React.Component {
-  // 用于初始化 state
+  // 用于初始化 state  constructor生命周期，如不需要，可缺省。通常会在 constructor 方法中初始化 state 和绑定事件处理程序。
+但是，如果写了constructor，那么必须在其中调用super(props);否则可能会引起报错。
+  ```js
   constructor() {}
+  ```
   // 用于替换 `componentWillReceiveProps` ，该函数会在初始化和 `update` 时被调用
   // 因为该函数是静态函数，所以取不到 `this`
   // 如果需要对比 `prevProps` 需要单独在 `state` 中维护
+  ```js
   static getDerivedStateFromProps(nextProps, prevState) {}
+  ```
   // 判断是否需要更新组件，多用于组件性能优化
+  ```js
   shouldComponentUpdate(nextProps, nextState) {}
+  ```
   // 组件挂载后调用
   // 可以在该函数中进行请求或者订阅
+  ```js
   componentDidMount() {}
+  ```
   // 用于获得最新的 DOM 数据
+  ```js
   getSnapshotBeforeUpdate() {}
+  ```
   // 组件即将销毁
   // 可以在此处移除订阅，定时器等等
+  ```js
   componentWillUnmount() {}
+  ```
   // 组件销毁后调用
+  ```js
   componentDidUnMount() {}
+  ```
   // 组件更新后调用
+  ```js
   componentDidUpdate() {}
+  ```
   // 渲染组件函数
   render() {}
-  
-  // 以下函数不建议使用
-  UNSAFE_componentWillMount() {}
-  UNSAFE_componentWillUpdate(nextProps, nextState) {}
-  UNSAFE_componentWillReceiveProps(nextProps) {}
 }
+
+* getDerivedStateFromProps/getSnapshotBeforeUpdate 和 componentWillMount/componentWillReceiveProps/componentWillUpdate 如果同时存在，React会在控制台给出警告信息，且仅执行 getDerivedStateFromProps/getSnapshotBeforeUpdate 【React@16.7.0】
+
+**props发生变化时**
+> static getDerivedStateFromProps(props, status)  -> shouldComponentUpdate(nextProps, nextState, nextContext) -> render -> getSnapshotBeforeUpdate(prevProps, prevState) -> componentDidUpdate(prevProps, prevState, snapshot) 
+  或者执行
+> componentWillReceiveProps(nextProps, nextContext)/UNSAFE_componentWillReceiveProps  ->  shouldComponentUpdate(nextProps, nextState, nextContext)  -> componentWillUpdate(nextProps, nextState, nextContext)  -> render  -> componentDidUpdate(prevProps, prevState, snapshot)
+**state发生变化时**
+> static getDerivedStateFromProps(props, status)  -> shouldComponentUpdate(nextProps, nextState, nextContext)  -> render  -> getSnapshotBeforeUpdate(prevProps, prevState)  -> componentDidUpdate(prevProps, prevState, snapshot)
+  或者执行
+> shouldComponentUpdate(nextProps, nextState, nextContext)  ->  componentWillUpdate(nextProps,nextState,nextContext) -> render  -> componentDidMount()
+
 
 
 ### React 最新api 总结
@@ -341,3 +365,43 @@ componentDidUpdate(prevProps, prevState){
 如果想要根据 props 计算属性，应该考虑将结果 memoization 化，参见 memoization
 如果想要根据 props 变化来重置某些状态，应该考虑使用受控组件
 配合 componentDidUpdate 周期函数，getDerivedStateFromProps 是为了替代 componentWillReceiveProps 而出现的。它将原本 componentWillReceiveProps 功能进行划分 —— 更新 state 和 操作/调用 props，很大程度避免了职责不清而导致过多的渲染, 从而影响应该性能。
+
+
+### React 中 setState 什么时候是同步的，什么时候是异步的？
+
+* 在 React 中，如果是由 React 引发的事件处理（比如通过 onClick 引发的事件处理），调用 setState **不会同步更新** this.state，除此之外的 setState 调用会同步执行 this.state。所谓“除此之外”，指的是绕过 React 通过 addEventListener 直接添加的事件处理函数，还有通过 setTimeout/setInterval 产生的异步调用。
+
+**原因：**在 React 的 setState 函数实现中，会根据一个变量 isBatchingUpdates 判断是直接更新 this.state 还是放到队列中回头再说，而 isBatchingUpdates 默认是 false，也就表示 setState 会同步更新 this.state，但是，有一个函数 batchedUpdates，这个函数会把 isBatchingUpdates 修改为true，而当 React 在调用事件处理函数之前就会调用这个 batchedUpdates，造成的后果就是由 React 控制的事件处理过程 setState 不会同步更新 this.state。
+### 
+
+```js
+class Example extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      val: 0
+    };
+  }
+  
+  componentDidMount() {
+    this.setState({val: this.state.val + 1});
+    console.log(this.state.val);    // 第 1 次 log 0 
+
+    this.setState({val: this.state.val + 1});
+    console.log(this.state.val);    // 第 2 次 log 0
+
+    setTimeout(() => {
+      this.setState({val: this.state.val + 1});
+      console.log(this.state.val);  // 第 3 次 log 2
+
+      this.setState({val: this.state.val + 1});
+      console.log(this.state.val);  // 第 4 次 log 3
+    }, 0);
+  }
+
+  render() {
+    return null;
+  }
+};
+
+```

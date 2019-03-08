@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cotainer {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            height: 100%;
+        }
+
+        .middle {
+            background-color: aquamarine;
+            flex-grow: 1;
+            overflow: auto;
+        }
+
+        .header,
+        .footer {
+            background-color: chartreuse;
+        }
+
+        /* 隐藏PC浏览器的滚动条，移动端无需考虑 */
+        .middle::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cotainer">
+        <div class="header">
+            header<br /><br /><br /><br />header
+        </div>
+        <div class="middle">
+            middle<br /><br /><br /><br /><br /><br /><br /><br />
+            middle<br /><br /><br /><br /><br /><br /><br /><br />
+            middle<br /><br /><br /><br /><br /><br /><br /><br />
+            middle<br /><br /><br /><br /><br /><br /><br /><br />
+        </div>
+        <div class="footer">
+            footer<br /><br /><br /><br />footer
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

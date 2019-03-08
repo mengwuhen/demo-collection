@@ -131,3 +131,53 @@ console.log(document.createElement("script").async); // true
 * 不同于forEach方法，它可以与break、continue和return配合使用。提供了遍历所有数据结构的统一操作接口。
 
 
+### 以下 3 个判断数组的方法，请分别介绍它们之间的区别和优劣
+```js
+    Object.prototype.toString.call()  instanceof  Array.isArray()[es5]
+```
+
+###  DOM0 和 DOM2 的区别
+
+
+### axios 和 fetch  ajax 的区别
+
+> ajax 原生XHR的封装，除此以外还增添了对JSONP的支持
+```js
+    $.ajax({
+   type: 'POST',
+   url: url,
+   data: data,
+   dataType: dataType,
+   success: function () {},
+   error: function () {}
+});
+```
+> axios  Axios本质上也是对原生XHR的封装，只不过它是Promise的实现版本，符合最新的ES规范，从它的官网上可以看到它有以下几条特性：
+ >>从 node.js 创建 http 请求
+ >>支持 Promise API
+ >>客户端支持防止CSRF
+ >>提供了一些并发请求的接口（重要，方便了很多的操作）
+```js
+    axios({
+        method: 'post',
+        url: '/user/12345',
+        data: {
+            firstName: 'Fred',
+            lastName: 'Flintstone'
+        }
+    })
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+```
+
+> fetch fetch只对网络请求报错，对400，500都当做成功的请求，需要封装去处理 fetch默认不会带cookie，需要添加配置项  fetch不支持abort，不支持超时控制，使用setTimeout及Promise.reject的实现的超时控制并不能阻止请求过程继续在后台运行，造成了流量的浪费  fetch没有办法原生监测请求的进度，而XHR可以
+
+
+
+
+
+
