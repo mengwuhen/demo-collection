@@ -40,10 +40,10 @@
             return a * b * c;
         }
         var multi = curry(multiFn);
-        multi(2)(3)(4);
-        multi(2, 3, 4);
-        multi(2)(3, 4);
-        multi(2, 3)(4);
+        console.warn(multi(2)(3)(4))
+        // multi(2, 3, 4);
+        // multi(2)(3, 4);
+        console.warn(multi(2)(4))
 
 
         // this 指向
