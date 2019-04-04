@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+
+    <script>
+        // 实现一个New 操作符
+        // 它创建了一个全新的对象。
+        // 它会被执行[[Prototype]]（也就是__proto__）链接。
+        // 它使this指向新创建的对象。。
+        // 通过new创建的每个对象将最终被[[Prototype]]链接到这个函数的prototype对象上。
+        // 如果函数没有返回对象类型Object(包含Functoin, Array, Date, RegExg, Error)，那么new表达式中的函数调用将返回该对象引用。
+
+        function New(func) {
+            var res = {};
+            if (func.prototype !== null) {
+                res.__proto__ = func.prototype;
+            }
+            var ret = func.apply(res, Array.prototype.slice.call(arguments, 1));
+            if ((typeof ret === "object" || typeof ret === "function") && ret !== null) {
+                return ret;
+            }
+            return res;
+        }
+        var obj = New(A, 1, 2);
+        // equals to
+        var obj = new A(1, 2);
+
+        // 实现JSON.stringify
+        // Boolean | Number| String 类型会自动转换成对应的原始值。
+        // undefined、任意函数以及symbol，会被忽略（出现在非数组对象的属性值中时），或者被转换成 null（出现在数组中时）。
+        // 不可枚举的属性会被忽略
+        // 如果一个对象的属性值通过某种间接的方式指回该对象本身，即循环引用，属性也会被忽略。
+        function jsonStringify(obj) {
+            let type = typeof obj;
+            if (type !== "object" || type === null) {
+                if (/string|undefined|function/.test(type)) {
+                    obj = '"' + obj + '"';
+                }
+                return String(obj);
+            } else {
+                let json = []
+                arr = (obj && obj.constructor === Array);
+                for (let k in obj) {
+                    let v = obj[k];
+                    let type = typeof v;
+                    if (/string|undefined|function/.test(type)) {
+                        v = '"' + v + '"';
+                    } else if (type === "object") {
+                        v = jsonStringify(v);
+                    }
+                    json.push((arr ? "" : '"' + k + '":') + String(v));
+                }
+                return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}")
+            }
+        }
+        jsonStringify({
+            x: 5
+        }) // "{"x":5}"
+        jsonStringify([1, "false", false]) // "[1,"false",false]"
+        jsonStringify({
+            b: undefined
+        }) // "{"b":"undefined"}"
+        // 实现JSON.parse
+        // Function与eval有相同的字符串参数特性。 var func = new Function(arg1, arg2, ..., functionBody);
+        var jsonStr = '{ "age": 20, "name": "jack" }'
+        var json = (new Function('return ' + jsonStr))();
+
+        // 实现promise
+        // 三种状态pending| fulfilled(resolved) | rejected
+        // 当处于pending状态的时候，可以转移到fulfilled(resolved)或者rejected状态
+        // 当处于fulfilled(resolved)状态或者rejected状态的时候，就不可变。
+        const PENDING = "pending";
+        const FULFILLED = "fulfilled";
+        const REJECTED = "rejected";
+        function Promise(excutor) {
+            let that = this; // 缓存当前promise实例对象
+            that.status = PENDING; // 初始状态
+            that.value = undefined; // fulfilled状态时 返回的信息
+            that.reason = undefined; // rejected状态时 拒绝的原因
+            that.onFulfilledCallbacks = []; // 存储fulfilled状态对应的onFulfilled函数
+            that.onRejectedCallbacks = []; // 存储rejected状态对应的onRejected函数
+
+            function resolve(value) { // value成功态时接收的终值
+                if (value instanceof Promise) {
+                    return value.then(resolve, reject);
+                }
+                // 实践中要确保 onFulfilled 和 onRejected 方法异步执行，且应该在 then 方法被调用的那一轮事件循环之后的新执行栈中执行。
+                setTimeout(() => {
+                    // 调用resolve 回调对应onFulfilled函数
+                    if (that.status === PENDING) {
+                        // 只能由pending状态 => fulfilled状态 (避免调用多次resolve reject)
+                        that.status = FULFILLED;
+                        that.value = value;
+                        that.onFulfilledCallbacks.forEach(cb => cb(that.value));
+                    }
+                });
+            }
+
+            function reject(reason) { // reason失败态时接收的拒因
+                setTimeout(() => {
+                    // 调用reject 回调对应onRejected函数
+                    if (that.status === PENDING) {
+                        // 只能由pending状态 => rejected状态 (避免调用多次resolve reject)
+                        that.status = REJECTED;
+                        that.reason = reason;
+                        that.onRejectedCallbacks.forEach(cb => cb(that.reason));
+                    }
+                });
+            }
+
+            // 捕获在excutor执行器中抛出的异常
+            // new Promise((resolve, reject) => {
+            //     throw new Error('error in excutor')
+            // })
+            try {
+                excutor(resolve, reject);
+            } catch (e) {
+                reject(e);
+            }
+        }
+        Promise.prototype.then = function (onFulfilled, onRejected) {
+            const that = this;
+            let newPromise;
+            // 处理参数默认值 保证参数后续能够继续执行
+            onFulfilled =
+                typeof onFulfilled === "function" ? onFulfilled : value => value;
+            onRejected =
+                typeof onRejected === "function" ? onRejected : reason => {
+                    throw reason;
+                };
+            if (that.status === FULFILLED) { // 成功态
+                return newPromise = new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        try {
+                            let x = onFulfilled(that.value);
+                            resolvePromise(newPromise, x, resolve,
+                                reject); // 新的promise resolve 上一个onFulfilled的返回值
+                        } catch (e) {
+                            reject(e); // 捕获前面onFulfilled中抛出的异常 then(onFulfilled, onRejected);
+                        }
+                    });
+                })
+            }
+
+            if (that.status === REJECTED) { // 失败态
+                return newPromise = new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        try {
+                            let x = onRejected(that.reason);
+                            resolvePromise(newPromise, x, resolve, reject);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                });
+            }
+
+            if (that.status === PENDING) { // 等待态
+                // 当异步调用resolve/rejected时 将onFulfilled/onRejected收集暂存到集合中
+                return newPromise = new Promise((resolve, reject) => {
+                    that.onFulfilledCallbacks.push((value) => {
+                        try {
+                            let x = onFulfilled(value);
+                            resolvePromise(newPromise, x, resolve, reject);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                    that.onRejectedCallbacks.push((reason) => {
+                        try {
+                            let x = onRejected(reason);
+                            resolvePromise(newPromise, x, resolve, reject);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                });
+            }
+        };
+
+        //  实现instanceof 
+        // arr instanceOf Array
+        //instanceof运算符用于测试构造函数的prototype属性是否出现在对象的原型链中的任何位置
+        function instanceOf(left, right) {
+            let proto = left.__proto__;
+            let prototype = right.prototype
+            while (true) {
+                if (proto === null) return false
+                if (proto === prototype) return true
+                proto = proto.__proto__;
+            }
+        }
+    </script>
+</body>
+
+</html>

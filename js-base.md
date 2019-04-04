@@ -178,6 +178,8 @@ console.log(document.createElement("script").async); // true
 
 
 
+### event.targe和event.currentTarget的区别
 
+* event.target返回触发事件的元素  event.currentTarget返回绑定事件的元素
 
 

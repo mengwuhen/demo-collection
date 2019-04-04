@@ -192,5 +192,6 @@ var listener = $scope.$watch("quartz", function () {});
 // ...
 listener(); // Would clear the watch
 ```
-  
+### angular 的指令类型  
+> 
 
