@@ -405,3 +405,27 @@ class Example extends React.Component {
 };
 
 ```
+
+
+1.React 平时怎么绑定事件的？函内绑定和成员的箭头函数绑定有什么区别？如果是在 constructor 里 bind 绑定呢？
+2.React 常用的 hook 有什么？
+3.useMemo 平时都怎么用的？
+4.平时做过哪些 React 优化？怎么定位问题，如何优化？
+5.hook 解决了什么问题？为什么有 hook
+6.了解合成事件吗？是什么？为什么需要合成事件？（解决什么问题？）
+7.循环里的 key 有什么用？为什么一定要加？
+8.平时状态管理工具用什么？怎么选型的？为什么？redux 和 mobx 什么区别？
+9.什么是高阶组件？
+10.redux 的 connect 是什么？为什么需要 connect？
+11.PureComponent 和 React.memo 有什么区别？
+12.context 是什么？用过吗？怎么用的？
+13.ref 用过吗？什么场景？
+14.react-router 原理是什么？和 vue-router 什么区别？什么是动态路由，什么是静态路由？有什么区别？
+15.setState 什么时候是异步，什么时候是同步？
+16.为什么一定要 super(props)
+17.React 是如何 rerender 的？（得略懂源码，比如 diff vdom，然后判断是否要 render）
+18.mobx 和 redux 原理是什么？（你工作用什么就看什么，有时间就都掌握）
+19.React 是如何 diff的？什么样的策略？
+20.fiber 是什么？
+21.React 的一些TS类型问题。React.Element/React.ComponentType/React.ReactNode/JSX.Element/Element
+构建 react
